@@ -5,7 +5,6 @@ import 'package:final_crackteck/widgets/error_dialog.dart';
 import 'package:final_crackteck/widgets/phone_input_field.dart';
 import 'package:flutter/material.dart';
 
-import 'constants/api_constants.dart';
 import 'constants/app_colors.dart';
 import 'constants/app_spacing.dart';
 import 'constants/app_strings.dart';

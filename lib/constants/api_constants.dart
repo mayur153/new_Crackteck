@@ -28,6 +28,7 @@ class ApiConstants {
   static const String refreshToken = '$baseUrl/refresh-token';
   static const String signup = '$baseUrl/signup';
   static const String logout = '$baseUrl/logout';
+  static const String dashboard = '$baseUrl/dashboard';
 
   // Request Timeout
   static const Duration requestTimeout = Duration(seconds: 30);

@@ -1,5 +1,6 @@
-import 'package:final_crackteck/routes/app_routes.dart';
+import 'package:final_crackteck/routes/app_routes.dart' hide DashboardScreen;
 import 'package:flutter/material.dart';
+import 'screens/sales_person/salesperson_dashboard.dart';
 
 import 'constants/app_strings.dart';
 
@@ -85,6 +86,12 @@ class rolesccreen extends StatelessWidget {
                   icon: Icons.person_outline,
                   title: 'Sales Person',
                   onTap: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute<void>(
+                    //     builder: (BuildContext context) => const DashboardScreen(),
+                    //   ),
+                    // );
                     _navigateToLogin(
                       context,
                       roleId: 3,
@@ -156,15 +163,26 @@ class rolesccreen extends StatelessWidget {
       ),
     );
   }
-  void _navigateToLogin(
+  // void _navigateToLogin(
+  //     BuildContext context, {
+  //       required int roleId,
+  //       required String roleName,
+  //     }) {
+  //   Navigator.pushNamed(
+  //     context,
+  //     AppRoutes.login,
+  //     arguments: LoginArguments(roleId: roleId, roleName: roleName),
+  //   );
+    void _navigateToLogin(
       BuildContext context, {
         required int roleId,
         required String roleName,
       }) {
     Navigator.pushNamed(
       context,
-      AppRoutes.login,
-      arguments: LoginArguments(roleId: roleId, roleName: roleName),
+      AppRoutes.SalespersonDashboard,
+      arguments: SalespersonDashboard(roleId: roleId, roleName: roleName),
     );
+
   }
 }

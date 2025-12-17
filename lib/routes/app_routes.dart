@@ -19,6 +19,17 @@ class AppRoutes {
   static const String residentDashboard = '/resident-dashboard';
   static const String securityDashboard = '/security-dashboard';
 
+
+  static const String SalespersonDashboard = '/salesperson_dashboard.dart';
+  static const String NotificationScreen = '/salesperson_notification';
+  static const String TaskScreen = '/task';
+  static const String SalesOverviewScreen = '/sales_overview';
+  static const String SalesPersonLeadsScreen = '/sales_leads';
+  static const String SalesPersonFollowUpScreen = '/sale_followup';
+  static const String SalesPersonMeetingScreen = '/sale_meeting';
+  static const String SalesPersonQuotationScreen = '/sale_quatation';
+
+
 }
 
 /// Route arguments for passing data between screens
@@ -41,9 +52,58 @@ class OtpArguments {
   });
 }
 
+class DashboardScreen {
+  final int roleId;
+  final String roleName;
+
+  DashboardScreen({required this.roleId, required this.roleName});
+}
+
 class SignUpArguments {
   final int roleId;
   final String roleName;
 
   SignUpArguments({required this.roleId, required this.roleName});
+}
+class NotificationArguments {
+  final int roleId;
+  final String roleName;
+
+  NotificationArguments({required this.roleId, required this.roleName});
+}
+class TaskArguments {
+  final int roleId;
+  final String roleName;
+
+  TaskArguments({required this.roleId, required this.roleName});
+}
+class SalesOverviewArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesOverviewArguments({required this.roleId, required this.roleName});
+}
+class SalesleadsArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesleadsArguments({required this.roleId, required this.roleName});
+}
+class SalesfollowupArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesfollowupArguments({required this.roleId, required this.roleName});
+}
+class SalesmeetingArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesmeetingArguments({required this.roleId, required this.roleName});
+}
+class SalesquotationArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesquotationArguments({required this.roleId, required this.roleName});
 }
