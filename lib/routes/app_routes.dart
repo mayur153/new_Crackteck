@@ -28,6 +28,10 @@ class AppRoutes {
   static const String SalesPersonFollowUpScreen = '/sale_followup';
   static const String SalesPersonMeetingScreen = '/sale_meeting';
   static const String SalesPersonQuotationScreen = '/sale_quatation';
+  static const String SalesPersonMoreScreen = '/sale_profile';
+  static const String PrivacyPolicyScreen = '/sale_policy';
+  static const String SalesPersonPersonalInfoScreen = '/sale_personal_info';
+  static const String SalesPersonAttendanceScreen = '/sale_personal_attendance';
 
 
 }
@@ -106,4 +110,28 @@ class SalesquotationArguments {
   final String roleName;
 
   SalesquotationArguments({required this.roleId, required this.roleName});
+}
+class SalespersonArguments {
+  final int roleId;
+  final String roleName;
+
+  SalespersonArguments({required this.roleId, required this.roleName});
+}
+class SalespolicyArguments {
+  final int roleId;
+  final String roleName;
+
+  SalespolicyArguments({required this.roleId, required this.roleName});
+}
+class SalespersonalinfoArguments {
+  final int roleId;
+  final String roleName;
+
+  SalespersonalinfoArguments({required this.roleId, required this.roleName});
+}
+class SalesattendanceArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesattendanceArguments({required this.roleId, required this.roleName});
 }

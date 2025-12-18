@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
 import '../../widgets/bottom_navigation.dart';
 
 class SalesPersonFollowUpScreen extends StatefulWidget {
@@ -18,20 +19,23 @@ class SalesPersonFollowUpScreen extends StatefulWidget {
 }
 
 class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
+  // Colors
   static const Color midGreen = Color(0xFF1F8B00);
   static const Color darkGreen = Color(0xFF145A00);
-
   bool _moreOpen = false;
   int _navIndex = 0;
 
   final TextEditingController _searchCtrl = TextEditingController();
 
-  // Filter values shown in popup (like screenshot)
-  final Set<String> _statusFilters = <String>{};
+  // ✅ Status filters (same 3 as Leads)
+  final Set<FollowUpStatus> _statusFilters = {};
 
-  // Demo list (replace with API later)
-  final List<_FollowUpItem> _items = const [
-    _FollowUpItem(
+  // ✅ Selected date filter
+  DateTime? _selectedDate;
+
+  // Demo data
+  final List<FollowUpItem> _all = [
+    FollowUpItem(
       leadId: "L-001",
       name: "Khushi Yadav",
       number: "+91 **** ** ****",
@@ -39,30 +43,37 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
       time: "11:00 AM",
       company: "ABCD Ltd",
       industry: "Pharma",
-      status: "Pending",
-      actionStatus: "Canceled",
+      status: FollowUpStatus.pending,
     ),
-    _FollowUpItem(
+    FollowUpItem(
       leadId: "L-002",
-      name: "Riya Sharma",
+      name: "Riya Patel",
       number: "+91 **** ** ****",
       date: "03/04/2025",
-      time: "03:30 PM",
-      company: "XYZ Pvt",
-      industry: "Retail",
-      status: "Pending",
-      actionStatus: "Canceled",
-    ),
-    _FollowUpItem(
-      leadId: "L-003",
-      name: "Aman Verma",
-      number: "+91 **** ** ****",
-      date: "05/04/2025",
-      time: "01:00 PM",
-      company: "QWER Ltd",
+      time: "02:30 PM",
+      company: "NovaCare",
       industry: "Healthcare",
-      status: "Completed",
-      actionStatus: "Canceled",
+      status: FollowUpStatus.cancelled,
+    ),
+    FollowUpItem(
+      leadId: "L-003",
+      name: "Arjun Mehta",
+      number: "+91 **** ** ****",
+      date: "04/04/2025",
+      time: "10:15 AM",
+      company: "RetailPro",
+      industry: "Retail",
+      status: FollowUpStatus.confirmed,
+    ),
+    FollowUpItem(
+      leadId: "L-004",
+      name: "Neha Sharma",
+      number: "+91 **** ** ****",
+      date: "02/04/2025",
+      time: "06:00 PM",
+      company: "ManuWorks",
+      industry: "Manufacturer",
+      status: FollowUpStatus.pending,
     ),
   ];
 
@@ -72,27 +83,291 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
     super.dispose();
   }
 
-  List<_FollowUpItem> get _filteredItems {
+  void _showViewPopup(FollowUpItem item) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.35),
+      builder: (ctx) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // ===== HEADER =====
+                  const Text(
+                    "Follow-Up",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _row("Lead ID", item.leadId),
+                  _row("Number", item.number),
+                  _row("Name", item.name),
+                  _row("Email", "example@.com"), // static for now
+                  _row("Date", item.date),
+                  _row("Time", item.time),
+
+                  const SizedBox(height: 6),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Status",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Text(
+                        statusLabel(item.status),
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  _row(
+                    "Remarks",
+                    "Interested in Mac support service",
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  // ===== TIMELINE =====
+                  Row(
+                    children: [
+                      _dot(active: true),
+                      _line(),
+                      _dot(active: true),
+                      _line(),
+                      _dot(active: false),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("20/03/25", style: TextStyle(fontSize: 10)),
+                      Text("22/03/25", style: TextStyle(fontSize: 10)),
+                      Text("25/03/25", style: TextStyle(fontSize: 10)),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ===== CALL / CHAT =====
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.call),
+                          label: const Text("Call"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: darkGreen,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.chat),
+                          label: const Text("Chat"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: darkGreen,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // ===== EDIT / DELETE =====
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFE6D6),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit, color: Colors.orange),
+                            label: const Text(
+                              "Edit",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFE0E0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            label: const Text(
+                              "Delete",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  Widget _row(String k, String v) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              k,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+          ),
+          Text(
+            v,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dot({required bool active}) {
+    return Container(
+      width: 18,
+      height: 18,
+      decoration: BoxDecoration(
+        color: active ? Colors.green : Colors.grey.shade300,
+        shape: BoxShape.circle,
+      ),
+      child: active
+          ? const Icon(Icons.check, size: 12, color: Colors.white)
+          : null,
+    );
+  }
+
+  Widget _line() {
+    return Expanded(
+      child: Container(
+        height: 2,
+        color: Colors.green,
+      ),
+    );
+  }
+
+
+
+  void _snack(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  DateTime? _parseDMY(String dmy) {
+    // expects dd/MM/yyyy
+    try {
+      final parts = dmy.split("/");
+      if (parts.length != 3) return null;
+      final dd = int.parse(parts[0]);
+      final mm = int.parse(parts[1]);
+      final yy = int.parse(parts[2]);
+      return DateTime(yy, mm, dd);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
+  String _formatDMY(DateTime d) {
+    final dd = d.day.toString().padLeft(2, '0');
+    final mm = d.month.toString().padLeft(2, '0');
+    final yy = d.year.toString();
+    return "$dd/$mm/$yy";
+  }
+
+  List<FollowUpItem> get _filtered {
     final q = _searchCtrl.text.trim().toLowerCase();
 
-    return _items.where((x) {
+    return _all.where((x) {
       final matchesSearch = q.isEmpty ||
           x.leadId.toLowerCase().contains(q) ||
           x.name.toLowerCase().contains(q) ||
           x.number.toLowerCase().contains(q) ||
+          x.date.toLowerCase().contains(q) ||
+          x.time.toLowerCase().contains(q) ||
           x.company.toLowerCase().contains(q) ||
           x.industry.toLowerCase().contains(q) ||
-          x.status.toLowerCase().contains(q);
+          statusLabel(x.status).toLowerCase().contains(q);
 
       final matchesStatus =
           _statusFilters.isEmpty || _statusFilters.contains(x.status);
 
-      return matchesSearch && matchesStatus;
+      final matchesDate = _selectedDate == null
+          ? true
+          : (() {
+        final itemDate = _parseDMY(x.date);
+        if (itemDate == null) return false;
+        return _isSameDay(itemDate, _selectedDate!);
+      })();
+
+      return matchesSearch && matchesStatus && matchesDate;
     }).toList();
   }
 
   Future<void> _openFilterPopup() async {
-    final temp = Set<String>.from(_statusFilters);
+    final tempStatuses = Set<FollowUpStatus>.from(_statusFilters);
+    DateTime? tempDate = _selectedDate;
 
     await showDialog(
       context: context,
@@ -101,26 +376,27 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
       builder: (ctx) {
         return StatefulBuilder(
           builder: (ctx, setModalState) {
-            Widget checkboxItem({
-              required String label,
-              required bool checked,
-              required VoidCallback onTap,
-            }) {
+            Widget checkRow(FollowUpStatus s) {
+              final checked = tempStatuses.contains(s);
               return InkWell(
-                onTap: onTap,
+                onTap: () => setModalState(() {
+                  checked ? tempStatuses.remove(s) : tempStatuses.add(s);
+                }),
                 child: Row(
                   children: [
                     Icon(
-                      checked ? Icons.check_box : Icons.check_box_outline_blank,
+                      checked
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
                       color: checked ? darkGreen : const Color(0xFFBDBDBD),
                       size: 22,
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      label,
+                      statusLabel(s),
                       style: const TextStyle(
                         fontSize: 13,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],
@@ -128,11 +404,23 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
               );
             }
 
+            Future<void> pickDate() async {
+              final picked = await showDatePicker(
+                context: ctx,
+                initialDate: tempDate ?? DateTime.now(),
+                firstDate: DateTime(2020, 1, 1),
+                lastDate: DateTime(2035, 12, 31),
+              );
+              if (picked != null) {
+                setModalState(() => tempDate = picked);
+              }
+            }
+
             return Center(
               child: Material(
                 color: Colors.transparent,
                 child: Container(
-                  width: MediaQuery.of(ctx).size.width * 0.78,
+                  width: MediaQuery.of(ctx).size.width * 0.84,
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -157,50 +445,92 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                           fontSize: 13,
                         ),
                       ),
+                      const SizedBox(height: 12),
+
+                      // ✅ 3 options like Leads
+                      checkRow(FollowUpStatus.confirmed),
+                      const SizedBox(height: 10),
+                      checkRow(FollowUpStatus.pending),
+                      const SizedBox(height: 10),
+                      checkRow(FollowUpStatus.cancelled),
+
+                      const SizedBox(height: 16),
+
+                      // ✅ Date filter (Calendar button inside popup)
+                      const Text(
+                        "Date",
+                        style: TextStyle(
+                          color: darkGreen,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      ),
                       const SizedBox(height: 10),
 
                       Row(
                         children: [
                           Expanded(
-                            child: checkboxItem(
-                              label: "Pending",
-                              checked: temp.contains("Pending"),
-                              onTap: () => setModalState(() {
-                                temp.contains("Pending")
-                                    ? temp.remove("Pending")
-                                    : temp.add("Pending");
-                              }),
+                            child: InkWell(
+                              onTap: pickDate,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 44,
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_month_outlined,
+                                      color: darkGreen,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        tempDate == null
+                                            ? "Select date"
+                                            : _formatDMY(tempDate!),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: Colors.black54,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                          Expanded(
-                            child: checkboxItem(
-                              label: "Completed",
-                              checked: temp.contains("Completed"),
-                              onTap: () => setModalState(() {
-                                temp.contains("Completed")
-                                    ? temp.remove("Completed")
-                                    : temp.add("Completed");
-                              }),
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () => setModalState(() => tempDate = null),
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              height: 44,
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 14),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFE0E0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              alignment: Alignment.center,
+                              child: const Text(
+                                "Clear",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: checkboxItem(
-                              label: "Rejected",
-                              checked: temp.contains("Rejected"),
-                              onTap: () => setModalState(() {
-                                temp.contains("Rejected")
-                                    ? temp.remove("Rejected")
-                                    : temp.add("Rejected");
-                              }),
-                            ),
-                          ),
-                          const Expanded(child: SizedBox()),
                         ],
                       ),
 
@@ -236,7 +566,8 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                                 setState(() {
                                   _statusFilters
                                     ..clear()
-                                    ..addAll(temp);
+                                    ..addAll(tempStatuses);
+                                  _selectedDate = tempDate;
                                 });
                                 Navigator.pop(ctx);
                               },
@@ -271,17 +602,12 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
     );
   }
 
-  void _snack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final list = _filteredItems;
+    final list = _filtered;
 
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 70,
@@ -296,7 +622,8 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -309,7 +636,16 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () => _snack("Notifications"),
+            onPressed: (){
+              Navigator.pushNamed(
+                context,
+                AppRoutes.NotificationScreen,
+                arguments: NotificationArguments(
+                  roleId: widget.roleId,
+                  roleName: widget.roleName,
+                ),
+              );
+            },
             icon: const Icon(Icons.notifications_none, color: Colors.white),
           ),
           const SizedBox(width: 8),
@@ -335,7 +671,8 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.search, color: Colors.black45, size: 20),
+                          const Icon(Icons.search,
+                              color: Colors.black45, size: 20),
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
@@ -364,7 +701,8 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black12),
                       ),
-                      child: const Icon(Icons.filter_alt_outlined, color: darkGreen),
+                      child: const Icon(Icons.filter_alt_outlined,
+                          color: darkGreen),
                     ),
                   ),
                 ],
@@ -374,22 +712,24 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
             Expanded(
               child: Stack(
                 children: [
-                  // list
                   ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                     itemCount: list.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      return _FollowUpCard(
-                        item: list[index],
-                        onView: () => _snack("View ${list[index].leadId}"),
-                        onEdit: () => _snack("Edit ${list[index].leadId}"),
-                        onCancel: () => _snack("Cancelled ${list[index].leadId}"),
+                      final item = list[index];
+                      return FollowUpCard(
+                        item: item,
+                        onView: () => _showViewPopup(item),
+                        onEdit: () => _snack("Edit ${item.leadId}"),
+                        onStatusTap: () => _snack(
+                          "Status: ${statusLabel(item.status)}",
+                        ),
                       );
                     },
                   ),
 
-                  // Add Follow-Up button (bottom-right style like screenshot)
+                  // Floating "Add Follow-Up" button
                   Positioned(
                     right: 16,
                     bottom: 18,
@@ -433,6 +773,8 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
           ],
         ),
       ),
+
+
       bottomNavigationBar: CrackteckBottomSwitcher(
         isMoreOpen: _moreOpen,
         currentIndex: _navIndex,
@@ -450,25 +792,28 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
   }
 }
 
-// =================== CARD ===================
+// ======================= CARD =======================
 
-class _FollowUpCard extends StatelessWidget {
-  final _FollowUpItem item;
+class FollowUpCard extends StatelessWidget {
+  static const Color darkGreen = Color(0xFF145A00);
+
+  final FollowUpItem item;
   final VoidCallback onView;
   final VoidCallback onEdit;
-  final VoidCallback onCancel;
+  final VoidCallback onStatusTap;
 
-  const _FollowUpCard({
+  const FollowUpCard({
+    super.key,
     required this.item,
     required this.onView,
     required this.onEdit,
-    required this.onCancel,
+    required this.onStatusTap,
   });
-
-  static const Color darkGreen = Color(0xFF145A00);
 
   @override
   Widget build(BuildContext context) {
+    final pill = statusPill(item.status);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       decoration: BoxDecoration(
@@ -481,10 +826,12 @@ class _FollowUpCard extends StatelessWidget {
           _kv("Lead ID", item.leadId),
           _kv("Name", item.name),
           _kv("Number", item.number),
-          _kv("Date", item.company),
-          _kv("Time", item.industry),
-          _kv("Status", item.status),
+          _kv("Date", item.date),
+          _kv("Time", item.time),
+          _kv("Status", statusLabel(item.status)),
           const SizedBox(height: 12),
+
+          // View / Edit / Status (same style as Leads)
           Row(
             children: [
               Expanded(
@@ -508,12 +855,25 @@ class _FollowUpCard extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: _SmallButton(
-                  bg: const Color(0xFFFFE0E0),
-                  fg: Colors.red,
-                  label: "Canceled",
-                  icon: Icons.close,
-                  onTap: onCancel,
+                child: InkWell(
+                  onTap: onStatusTap,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: pill.bg,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      pill.text,
+                      style: TextStyle(
+                        color: pill.fg,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -586,20 +946,23 @@ class _SmallButton extends StatelessWidget {
   }
 }
 
-// =================== MODEL ===================
+// ======================= MODEL + STATUS =======================
 
-class _FollowUpItem {
+enum FollowUpStatus { confirmed, pending, cancelled }
+
+class FollowUpItem {
   final String leadId;
   final String name;
   final String number;
-  final String date;
+  final String date; // dd/MM/yyyy
   final String time;
+
   final String company;
   final String industry;
-  final String status;
-  final String actionStatus;
 
-  const _FollowUpItem({
+  final FollowUpStatus status;
+
+  FollowUpItem({
     required this.leadId,
     required this.name,
     required this.number,
@@ -608,6 +971,46 @@ class _FollowUpItem {
     required this.company,
     required this.industry,
     required this.status,
-    required this.actionStatus,
   });
+}
+
+String statusLabel(FollowUpStatus s) {
+  switch (s) {
+    case FollowUpStatus.confirmed:
+      return "Confirmed";
+    case FollowUpStatus.pending:
+      return "Pending";
+    case FollowUpStatus.cancelled:
+      return "Canceled";
+  }
+}
+
+class _Pill {
+  final Color bg;
+  final Color fg;
+  final String text;
+  const _Pill({required this.bg, required this.fg, required this.text});
+}
+
+_Pill statusPill(FollowUpStatus s) {
+  switch (s) {
+    case FollowUpStatus.confirmed:
+      return const _Pill(
+        bg: Color(0xFF145A00),
+        fg: Colors.white,
+        text: "Confirmed",
+      );
+    case FollowUpStatus.pending:
+      return const _Pill(
+        bg: Color(0xFFEDEDED),
+        fg: Colors.black87,
+        text: "Pending",
+      );
+    case FollowUpStatus.cancelled:
+      return const _Pill(
+        bg: Color(0xFFFFE0E0),
+        fg: Colors.red,
+        text: "Canceled",
+      );
+  }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_notification.dart';
+import '../screens/sales_person/sales_attendance_screen.dart';
 import '../screens/sales_person/sales_person_meeting_tabs.dart';
 import '../screens/sales_person/sales_person_sales_overview_screen.dart';
+import '../screens/sales_person/sales_personal_info_screen.dart';
+import '../screens/sales_person/sales_privacy_screen.dart';
 import '../screens/sales_person/sales_quatation_tabs_screen.dart';
 import '../screens/sales_person/salesperson_ followup_ screen.dart';
 import '../screens/sales_person/salesperson_dashboard.dart';
@@ -10,6 +13,7 @@ import '../screens/sales_person/salesperson_dashboard.dart';
 import '../login_screen.dart';
 import '../role_screen.dart';
 import '../screens/sales_person/salesperson_leads_screen.dart';
+import '../screens/sales_person/salesperson_profile_tab.dart';
 import 'app_routes.dart' hide DashboardScreen;
 
 
@@ -121,6 +125,50 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               SalesPersonQuotationScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.SalesPersonMoreScreen:
+        final args = settings.arguments as SalespersonArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              SalesPersonMoreScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.PrivacyPolicyScreen:
+        final args = settings.arguments as SalespolicyArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              PrivacyPolicyScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.SalesPersonPersonalInfoScreen:
+        final args = settings.arguments as SalespersonalinfoArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              SalesPersonPersonalInfoScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.SalesPersonAttendanceScreen:
+        final args = settings.arguments as SalesattendanceArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              SalesPersonAttendanceScreen(roleId: args.roleId, roleName: args.roleName),
           settings: settings,
         );
 

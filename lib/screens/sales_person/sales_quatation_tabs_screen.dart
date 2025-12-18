@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
 import '../../widgets/bottom_navigation.dart';
 
 class SalesPersonQuotationScreen extends StatefulWidget {
@@ -29,6 +30,9 @@ class _SalesPersonQuotationScreenState
 
   // Filter popup selections (Draft/Sent/Accepted/Viewed/Rejected)
   final Set<String> _statusFilters = <String>{};
+
+  // ✅ Date filter (single date like your screenshot)
+  DateTime? _selectedDate;
 
   // Demo list (replace with API later)
   final List<_QuotationItem> _items = const [
@@ -67,10 +71,87 @@ class _SalesPersonQuotationScreenState
     super.dispose();
   }
 
+  // ✅ Parse "May 30, 2025 – 11:00 AM" to a DateTime (date-only)
+  DateTime? _parseCreatedDate(String raw) {
+    try {
+      final parts = raw.split(RegExp(r'\s[–-]\s'));
+      final datePart = parts.isNotEmpty ? parts.first.trim() : raw.trim();
+
+      final byComma = datePart.split(',');
+      if (byComma.length < 2) return null;
+
+      final left = byComma[0].trim(); // e.g. "May 30"
+      final year = int.parse(byComma[1].trim());
+
+      final leftParts = left.split(RegExp(r'\s+'));
+      if (leftParts.length < 2) return null;
+
+      final month = _monthNumber(leftParts[0].trim());
+      final day = int.parse(leftParts[1].trim());
+      if (month == null) return null;
+
+      return DateTime(year, month, day);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  int? _monthNumber(String m) {
+    final key = m.toLowerCase();
+    const map = {
+      "jan": 1,
+      "january": 1,
+      "feb": 2,
+      "february": 2,
+      "mar": 3,
+      "march": 3,
+      "apr": 4,
+      "april": 4,
+      "may": 5,
+      "jun": 6,
+      "june": 6,
+      "jul": 7,
+      "july": 7,
+      "aug": 8,
+      "august": 8,
+      "sep": 9,
+      "sept": 9,
+      "september": 9,
+      "oct": 10,
+      "october": 10,
+      "nov": 11,
+      "november": 11,
+      "dec": 12,
+      "december": 12,
+    };
+    return map[key];
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
+  String _formatShortDate(DateTime d) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    return "${d.day.toString().padLeft(2, '0')} ${months[d.month - 1]} ${d.year}";
+  }
+
   List<_QuotationItem> get _filteredItems {
     final q = _searchCtrl.text.trim().toLowerCase();
 
-    return _items.where((x) {
+    final list = _items.where((x) {
       final matchesSearch = q.isEmpty ||
           x.leadId.toLowerCase().contains(q) ||
           x.quotationId.toLowerCase().contains(q) ||
@@ -83,8 +164,29 @@ class _SalesPersonQuotationScreenState
       final matchesStatus =
           _statusFilters.isEmpty || _statusFilters.contains(x.status);
 
-      return matchesSearch && matchesStatus;
+      // ✅ Date filter (single date)
+      final matchesDate = _selectedDate == null
+          ? true
+          : (() {
+        final d = _parseCreatedDate(x.createdDate);
+        if (d == null) return false;
+        return _isSameDay(d, _selectedDate!);
+      })();
+
+      return matchesSearch && matchesStatus && matchesDate;
     }).toList();
+
+    // ✅ Sort by created date (latest first)
+    list.sort((a, b) {
+      final da = _parseCreatedDate(a.createdDate);
+      final db = _parseCreatedDate(b.createdDate);
+      if (da == null && db == null) return 0;
+      if (da == null) return 1;
+      if (db == null) return -1;
+      return db.compareTo(da);
+    });
+
+    return list;
   }
 
   void _snack(String msg) {
@@ -93,6 +195,9 @@ class _SalesPersonQuotationScreenState
 
   Future<void> _openFilterPopup() async {
     final temp = Set<String>.from(_statusFilters);
+
+    // ✅ temp date inside popup
+    DateTime? tempDate = _selectedDate;
 
     await showDialog(
       context: context,
@@ -126,6 +231,21 @@ class _SalesPersonQuotationScreenState
                   ],
                 ),
               );
+            }
+
+            Future<void> pickDate() async {
+              final now = DateTime.now();
+              final picked = await showDatePicker(
+                context: ctx,
+                initialDate: tempDate ?? now,
+                firstDate: DateTime(now.year - 5),
+                lastDate: DateTime(now.year + 5),
+                helpText: "Select date",
+              );
+
+              if (picked != null) {
+                setModalState(() => tempDate = picked);
+              }
             }
 
             return Center(
@@ -232,6 +352,87 @@ class _SalesPersonQuotationScreenState
                         ],
                       ),
 
+                      const SizedBox(height: 16),
+
+                      // ✅ Date (matches your screenshot UI)
+                      const Text(
+                        "Date",
+                        style: TextStyle(
+                          color: darkGreen,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: pickDate,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                height: 46,
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.black12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_month,
+                                      color: darkGreen,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        tempDate == null
+                                            ? "Select date"
+                                            : _formatShortDate(tempDate!),
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: Colors.black54,
+                                      size: 22,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          InkWell(
+                            onTap: () => setModalState(() => tempDate = null),
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              height: 46,
+                              width: 84,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFE0E0),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              alignment: Alignment.center,
+                              child: const Text(
+                                "Clear",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 18),
 
                       Row(
@@ -265,6 +466,9 @@ class _SalesPersonQuotationScreenState
                                   _statusFilters
                                     ..clear()
                                     ..addAll(temp);
+
+                                  // ✅ save selected date
+                                  _selectedDate = tempDate;
                                 });
                                 Navigator.pop(ctx);
                               },
@@ -332,7 +536,6 @@ class _SalesPersonQuotationScreenState
                   _kvRow("Updated Date", "02-06-2025"),
                   const SizedBox(height: 12),
 
-                  // Table header
                   Container(
                     height: 32,
                     decoration: BoxDecoration(
@@ -342,16 +545,40 @@ class _SalesPersonQuotationScreenState
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: const Row(
                       children: [
-                        SizedBox(width: 34, child: Text("QTY", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12))),
-                        Expanded(child: Text("Description", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12))),
-                        SizedBox(width: 70, child: Text("HSN code", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12))),
-                        SizedBox(width: 80, child: Text("Unit Price", textAlign: TextAlign.right, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 12))),
+                        SizedBox(
+                            width: 34,
+                            child: Text("QTY",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12))),
+                        Expanded(
+                            child: Text("Description",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12))),
+                        SizedBox(
+                            width: 70,
+                            child: Text("HSN code",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12))),
+                        SizedBox(
+                            width: 80,
+                            child: Text("Unit Price",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12))),
                       ],
                     ),
                   ),
                   const SizedBox(height: 8),
 
-                  // Table rows (demo)
                   _tableRow(qty: "01", desc: "Laptop", hsn: "02", price: "12000.0"),
                   _tableRow(qty: "03", desc: "Amc", hsn: "02", price: "12000.0"),
                   _tableRow(qty: "02", desc: "Laptop", hsn: "02", price: "12000.0"),
@@ -419,13 +646,30 @@ class _SalesPersonQuotationScreenState
     required String price,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Row(
         children: [
-          SizedBox(width: 34, child: Text(qty, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12))),
-          Expanded(child: Text(desc, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12))),
-          SizedBox(width: 70, child: Text(hsn, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12))),
-          SizedBox(width: 80, child: Text(price, textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12))),
+          SizedBox(
+            width: 34,
+            child: Text(qty,
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+          ),
+          Expanded(
+            child: Text(desc,
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+          ),
+          SizedBox(
+            width: 70,
+            child: Text(hsn,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+          ),
+          SizedBox(
+            width: 80,
+            child: Text(price,
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+          ),
         ],
       ),
     );
@@ -433,37 +677,44 @@ class _SalesPersonQuotationScreenState
 
   static Widget _totalRow(String k, String v) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SizedBox(width: 120, child: Text(k, style: const TextStyle(fontWeight: FontWeight.w700))),
-        SizedBox(width: 90, child: Text(v, textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.w800))),
+        Expanded(
+          child: Text(k,
+              style: const TextStyle(fontSize: 12, color: Colors.black54)),
+        ),
+        Text(v, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900)),
       ],
     );
   }
 
   static Widget _totalHighlight(String k, String v) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: const Color(0xFFE9FFE6),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(width: 120, child: Text(k, style: const TextStyle(fontWeight: FontWeight.w900))),
-          SizedBox(width: 90, child: Text(v, textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.w900))),
+          Expanded(
+            child: Text(k,
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900)),
+          ),
+          Text(v, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900)),
         ],
       ),
     );
   }
 
-  Widget _bigGreenButton({required String label, required VoidCallback onTap}) {
+  static Widget _bigGreenButton({
+    required String label,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 46,
+        height: 42,
         width: double.infinity,
         decoration: BoxDecoration(
           color: darkGreen,
@@ -475,7 +726,6 @@ class _SalesPersonQuotationScreenState
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w900,
-            fontSize: 16,
           ),
         ),
       ),
@@ -488,7 +738,6 @@ class _SalesPersonQuotationScreenState
 
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 70,
@@ -516,17 +765,24 @@ class _SalesPersonQuotationScreenState
         ),
         actions: [
           IconButton(
-            onPressed: () => _snack("Notifications"),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.NotificationScreen,
+                arguments: NotificationArguments(
+                  roleId: widget.roleId,
+                  roleName: widget.roleName,
+                ),
+              );
+            },
             icon: const Icon(Icons.notifications_none, color: Colors.white),
           ),
           const SizedBox(width: 8),
         ],
       ),
-
       body: SafeArea(
         child: Column(
           children: [
-            // Search + Filter row
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
               child: Row(
@@ -577,25 +833,69 @@ class _SalesPersonQuotationScreenState
                 ],
               ),
             ),
-
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                itemCount: list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  return _QuotationCard(
-                    item: list[index],
-                    onView: () => _openViewPopup(list[index]),
-                    onEdit: () => _snack("Edit ${list[index].quotationId}"),
-                  );
-                },
+              child: Stack(
+                children: [
+                  ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 120),
+                    itemCount: list.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final item = list[index];
+                      return _QuotationCard(
+                        item: item,
+                        onView: () => _openViewPopup(item),
+                        onEdit: () => _snack("Edit ${item.quotationId}"),
+                        onStatusTap: () => _snack("Status ${item.status}"),
+                      );
+                    },
+                  ),
+
+                  // ✅ ADD QUOTATION BUTTON (your exact code)
+                  Positioned(
+                    right: 16,
+                    bottom: 18,
+                    child: InkWell(
+                      onTap: () => _snack("Add Quotation"),
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 40,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        decoration: BoxDecoration(
+                          color: darkGreen,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.14),
+                              blurRadius: 14,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.add, color: Colors.white, size: 18),
+                            SizedBox(width: 8),
+                            Text(
+                              "Add Quotation",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+
           ],
         ),
       ),
-
       bottomNavigationBar: CrackteckBottomSwitcher(
         isMoreOpen: _moreOpen,
         currentIndex: _navIndex,
@@ -609,29 +909,28 @@ class _SalesPersonQuotationScreenState
         onMeeting: () {},
         onQuotation: () {},
       ),
-
     );
   }
 }
-
-// =================== CARD ===================
 
 class _QuotationCard extends StatelessWidget {
   final _QuotationItem item;
   final VoidCallback onView;
   final VoidCallback onEdit;
+  final VoidCallback onStatusTap;
 
   const _QuotationCard({
     required this.item,
     required this.onView,
     required this.onEdit,
+    required this.onStatusTap,
   });
 
   static const Color darkGreen = Color(0xFF145A00);
 
   @override
   Widget build(BuildContext context) {
-    final pill = _pillStyle(item.pill);
+    final pillStyle = _pill(item.pill);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
@@ -642,17 +941,13 @@ class _QuotationCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Top row: View / Edit / Status pill
-
           _kv("Lead ID", item.leadId),
           _kv("Quotation ID", item.quotationId),
           _kv("Client Name", item.clientName),
           _kv("Created Date", item.createdDate),
           _kv("Updated Date", item.updatedDate),
           _kv("Status", item.status),
-
           const SizedBox(height: 12),
-
           Row(
             children: [
               Expanded(
@@ -676,40 +971,44 @@ class _QuotationCard extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Container(
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: pill.bg,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    item.pill,
-                    style: TextStyle(
-                      color: pill.fg,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 12,
+                child: InkWell(
+                  onTap: onStatusTap,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: pillStyle.bg,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      item.pill,
+                      style: TextStyle(
+                        color: pillStyle.fg,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
               ),
             ],
-          ),
+          )
         ],
       ),
     );
   }
 
-  _PillStyle _pillStyle(String s) {
+  _Pill _pill(String s) {
     switch (s) {
       case "Confirmed":
-        return const _PillStyle(bg: darkGreen, fg: Colors.white);
+        return const _Pill(bg: darkGreen, fg: Colors.white);
       case "Pending":
-        return const _PillStyle(bg: Color(0xFFEDEDED), fg: Colors.black87);
+        return const _Pill(bg: Color(0xFFEDEDED), fg: Colors.black87);
       case "Canceled":
-        return const _PillStyle(bg: Color(0xFFFFE0E0), fg: Colors.red);
+        return const _Pill(bg: Color(0xFFFFE0E0), fg: Colors.red);
       default:
-        return const _PillStyle(bg: Color(0xFFEDEDED), fg: Colors.black87);
+        return const _Pill(bg: Color(0xFFEDEDED), fg: Colors.black87);
     }
   }
 
@@ -734,10 +1033,10 @@ class _QuotationCard extends StatelessWidget {
   }
 }
 
-class _PillStyle {
+class _Pill {
   final Color bg;
   final Color fg;
-  const _PillStyle({required this.bg, required this.fg});
+  const _Pill({required this.bg, required this.fg});
 }
 
 class _SmallButton extends StatelessWidget {
@@ -782,19 +1081,13 @@ class _SmallButton extends StatelessWidget {
   }
 }
 
-// =================== MODEL ===================
-
 class _QuotationItem {
   final String leadId;
   final String quotationId;
   final String clientName;
   final String createdDate;
   final String updatedDate;
-
-  /// Filter uses this
   final String status;
-
-  /// Top pill (Confirmed / Pending / Canceled)
   final String pill;
 
   const _QuotationItem({

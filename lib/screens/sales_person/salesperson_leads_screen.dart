@@ -32,8 +32,12 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
   // ✅ Popup status filters (New/Lost/Qualified/Unqualified)
   final Set<String> _statusFiltersStr = <String>{};
 
-  // ✅ Demo data with 3 status types (your app can replace later)
-  final List<_LeadItem> _leads = const [
+  // ✅ Date filter (Calendar) - single date like your screenshot
+  DateTime? _selectedDate;
+
+  // ✅ Demo data with status types (your app can replace later)
+  // ✅ Added leadDate for sorting/filtering
+  final List<_LeadItem> _leads = [
     _LeadItem(
       leadId: "L-001",
       name: "Khushi Yadav",
@@ -42,6 +46,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       industry: "Pharma",
       urgency: "High",
       status: LeadStatus.confirmed,
+      leadDate: DateTime(2025, 12, 12),
     ),
     _LeadItem(
       leadId: "L-002",
@@ -51,6 +56,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       industry: "Retail",
       urgency: "Medium",
       status: LeadStatus.pending,
+      leadDate: DateTime(2025, 12, 16),
     ),
     _LeadItem(
       leadId: "L-003",
@@ -60,6 +66,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       industry: "Healthcare",
       urgency: "Low",
       status: LeadStatus.cancelled,
+      leadDate: DateTime(2025, 11, 28),
     ),
     _LeadItem(
       leadId: "L-004",
@@ -69,6 +76,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       industry: "Manufacturer",
       urgency: "High",
       status: LeadStatus.pending,
+      leadDate: DateTime(2025, 12, 18),
     ),
   ];
 
@@ -90,14 +98,35 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
     }
   }
 
-  // ✅ SEARCH + FILTER logic
+  String _formatShortDate(DateTime d) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    return "${d.day.toString().padLeft(2, '0')} ${months[d.month - 1]} ${d.year}";
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  // ✅ SEARCH + FILTER + SORT logic
   List<_LeadItem> get _filteredLeads {
     final q = _searchCtrl.text.trim().toLowerCase();
 
-    return _leads.where((lead) {
+    final list = _leads.where((lead) {
       final popupStatus = _mapStatusToPopupLabel(lead.status);
 
-      // search match
       final matchesSearch = q.isEmpty ||
           lead.leadId.toLowerCase().contains(q) ||
           lead.name.toLowerCase().contains(q) ||
@@ -107,22 +136,28 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
           lead.status.label.toLowerCase().contains(q) ||
           popupStatus.toLowerCase().contains(q);
 
-      // industry filter match
       final matchesIndustry =
           _industryFilters.isEmpty || _industryFilters.contains(lead.industry);
 
-      // status filter match (using popup labels)
-      final matchesStatus = _statusFiltersStr.isEmpty ||
-          _statusFiltersStr.contains(popupStatus);
+      final matchesStatus =
+          _statusFiltersStr.isEmpty || _statusFiltersStr.contains(popupStatus);
 
-      return matchesSearch && matchesIndustry && matchesStatus;
+      final matchesDate = _selectedDate == null
+          ? true
+          : _isSameDay(lead.leadDate, _selectedDate!);
+
+      return matchesSearch && matchesIndustry && matchesStatus && matchesDate;
     }).toList();
+
+    list.sort((a, b) => b.leadDate.compareTo(a.leadDate));
+    return list;
   }
 
   // ✅ Open center popup like screenshot
   Future<void> _openFilterPopup() async {
     final tempIndustry = Set<String>.from(_industryFilters);
     final tempStatus = Set<String>.from(_statusFiltersStr);
+    DateTime? tempDate = _selectedDate;
 
     await showDialog(
       context: context,
@@ -167,6 +202,21 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
               );
             }
 
+            Future<void> pickDate() async {
+              final now = DateTime.now();
+              final picked = await showDatePicker(
+                context: ctx,
+                initialDate: tempDate ?? now,
+                firstDate: DateTime(now.year - 5),
+                lastDate: DateTime(now.year + 5),
+                helpText: "Select date",
+              );
+
+              if (picked != null) {
+                setModalState(() => tempDate = picked);
+              }
+            }
+
             return Center(
               child: Material(
                 color: Colors.transparent,
@@ -188,7 +238,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // -------- Industry Type
                       const Text(
                         "Industry Type",
                         style: TextStyle(
@@ -244,7 +293,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
 
                       const SizedBox(height: 16),
 
-                      // -------- Status
                       const Text(
                         "Status",
                         style: TextStyle(
@@ -298,9 +346,88 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         ),
                       ),
 
+                      const SizedBox(height: 16),
+
+                      const Text(
+                        "Date",
+                        style: TextStyle(
+                          color: darkGreen,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: pickDate,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                height: 46,
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.black12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_month,
+                                      color: darkGreen,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        tempDate == null
+                                            ? "Select date"
+                                            : _formatShortDate(tempDate!),
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: Colors.black54,
+                                      size: 22,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          InkWell(
+                            onTap: () => setModalState(() => tempDate = null),
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              height: 46,
+                              width: 84,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFE0E0),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              alignment: Alignment.center,
+                              child: const Text(
+                                "Clear",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 18),
 
-                      // -------- Buttons row
                       Row(
                         children: [
                           Expanded(
@@ -332,10 +459,10 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                                   _industryFilters
                                     ..clear()
                                     ..addAll(tempIndustry);
-
                                   _statusFiltersStr
                                     ..clear()
                                     ..addAll(tempStatus);
+                                  _selectedDate = tempDate;
                                 });
                                 Navigator.pop(ctx);
                               },
@@ -357,8 +484,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                               ),
                             ),
                           ),
-
-
                         ],
                       ),
                     ],
@@ -370,6 +495,172 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
         );
       },
     );
+  }
+
+  // ✅ Lead details popup (center) - closes when tapping outside
+  Future<void> _openLeadDetailsPopup(_LeadItem lead) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.35),
+      builder: (ctx) {
+        Widget kv(String k, String v, {Color? valueColor}) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    k,
+                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    v,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                      color: valueColor ?? Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        Widget actionButton({
+          required String label,
+          required IconData icon,
+          required Color bg,
+          required Color fg,
+          required VoidCallback onTap,
+        }) {
+          return Expanded(
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                height: 42,
+                decoration: BoxDecoration(
+                  color: bg,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon, color: fg, size: 18),
+                    const SizedBox(width: 8),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        color: fg,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        return Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(ctx).size.width * 0.86,
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.14),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  kv("Lead ID", lead.leadId),
+                  kv("Name", lead.name),
+                  kv("Number", lead.number),
+                  kv("Company Name", lead.company),
+                  kv("Industry", lead.industry),
+                  kv("Email", "example@.com"),
+                  kv("Budget range", "50k"),
+                  kv("Source", "Website"),
+                  kv("Requirement", "CCTV"),
+                  kv("Lead Status", "Hold"),
+                  kv("Type", "Non- AMC"),
+                  kv(
+                    "Urgency",
+                    lead.urgency,
+                    valueColor: lead.urgency.toLowerCase() == "high"
+                        ? Colors.red
+                        : Colors.black,
+                  ),
+                  kv(
+                    "Address",
+                    "Office No 501, 5th Floor,\nGhanshyam Enclave, New Link\nRd, Kandivali West,\nMumbai, Maharashtra 400067",
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      actionButton(
+                        label: "Call",
+                        icon: Icons.call,
+                        bg: darkGreen,
+                        fg: Colors.white,
+                        onTap: () => _snack(context, "Call ${lead.number}"),
+                      ),
+                      const SizedBox(width: 12),
+                      actionButton(
+                        label: "Chat",
+                        icon: Icons.chat_bubble_outline,
+                        bg: darkGreen,
+                        fg: Colors.white,
+                        onTap: () => _snack(context, "Chat ${lead.leadId}"),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      actionButton(
+                        label: "Edit",
+                        icon: Icons.edit_outlined,
+                        bg: const Color(0xFFFFE6D6),
+                        fg: Colors.deepOrange,
+                        onTap: () => _snack(context, "Edit ${lead.leadId}"),
+                      ),
+                      const SizedBox(width: 12),
+                      actionButton(
+                        label: "Delete",
+                        icon: Icons.delete_outline,
+                        bg: const Color(0xFFFFE0E0),
+                        fg: Colors.red,
+                        onTap: () => _snack(context, "Delete ${lead.leadId}"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _snack(BuildContext context, String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -423,7 +714,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Search + Filter row
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
               child: Row(
@@ -477,12 +767,9 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
               ),
             ),
 
-            // Leads list
-            // Leads list + Add Follow-Up button
             Expanded(
               child: Stack(
                 children: [
-                  // ✅ Leads list (add bottom padding so button doesn't overlap last card)
                   visibleLeads.isEmpty
                       ? const Center(
                     child: Text(
@@ -491,14 +778,14 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                     ),
                   )
                       : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 90), // ✅ was 16
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
                     itemCount: visibleLeads.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final lead = visibleLeads[index];
                       return _LeadCard(
                         lead: lead,
-                        onView: () => _snack(context, "View ${lead.leadId}"),
+                        onView: () => _openLeadDetailsPopup(lead),
                         onEdit: () => _snack(context, "Edit ${lead.leadId}"),
                         onStatusTap: () => _snack(
                           context,
@@ -508,12 +795,11 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                     },
                   ),
 
-                  // ✅ Add Follow-Up button (bottom-right)
                   Positioned(
                     right: 16,
                     bottom: 18,
                     child: InkWell(
-                      onTap: () => _snack(context, "Add Follow-Up"),
+                      onTap: () => _snack(context, "Add Leads"),
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         height: 40,
@@ -549,7 +835,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -567,10 +852,6 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
         onQuotation: () {},
       ),
     );
-  }
-
-  void _snack(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }
 
@@ -794,6 +1075,8 @@ class _LeadItem {
   final String urgency;
   final LeadStatus status;
 
+  final DateTime leadDate;
+
   const _LeadItem({
     required this.leadId,
     required this.name,
@@ -802,5 +1085,6 @@ class _LeadItem {
     required this.industry,
     required this.urgency,
     required this.status,
+    required this.leadDate,
   });
 }

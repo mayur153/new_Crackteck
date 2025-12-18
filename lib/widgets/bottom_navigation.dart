@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../routes/app_routes.dart';
+import '../screens/sales_person/salesperson_dashboard.dart';
 
 class CrackteckBottomSwitcher extends StatelessWidget {
   final bool isMoreOpen;
@@ -65,6 +66,8 @@ class CrackteckBottomSwitcher extends StatelessWidget {
           )
               : _MainNavBar(
             key: const ValueKey("main"),
+            roleId: roleId,
+            roleName: roleName,
             currentIndex: currentIndex,
             onHome: onHome,
             onMore: onMore,
@@ -85,18 +88,23 @@ class _MainNavBar extends StatelessWidget {
   final VoidCallback onHome;
   final VoidCallback onMore;
   final VoidCallback onProfile;
+  final int roleId;
+  final String roleName;
 
   final Color activeColor;
   final Color inactiveColor;
 
   const _MainNavBar({
     super.key,
+    required this.roleId,
+    required this.roleName,
     required this.currentIndex,
     required this.onHome,
     required this.onMore,
     required this.onProfile,
     required this.activeColor,
     required this.inactiveColor,
+
   });
 
   @override
@@ -123,7 +131,12 @@ class _MainNavBar extends StatelessWidget {
             isActive: currentIndex == 0,
             activeColor: activeColor,
             inactiveColor: inactiveColor,
-            onPressed: onHome,
+            onPressed:() { Navigator.pushNamed(
+              context,
+              AppRoutes.SalespersonDashboard,
+              arguments: SalespersonDashboard(roleId: roleId, roleName: roleName),
+            );
+            },
           ),
           _NavItem(
             label: "More",
@@ -139,7 +152,12 @@ class _MainNavBar extends StatelessWidget {
             isActive: currentIndex == 2,
             activeColor: activeColor,
             inactiveColor: inactiveColor,
-            onPressed: onProfile,
+            onPressed: () { Navigator.pushNamed(
+              context,
+              AppRoutes.SalesPersonMoreScreen,
+              arguments: SalespersonArguments(roleId: roleId, roleName: roleName),
+            );
+            },
           ),
         ],
       ),

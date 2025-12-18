@@ -1,3 +1,4 @@
+import 'package:final_crackteck/screens/sales_person/sales_privacy_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes/app_routes.dart';
@@ -80,60 +81,63 @@ class _SalesPersonMoreScreenState extends State<SalesPersonMoreScreen> {
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
           child: Column(
             children: [
-              // Login / Logout cards
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _TimeCard(
-                        title: "Login",
-                        time: loginTime,
-                        bg: const Color(0xFFE9FFE6),
-                        iconBg: const Color(0xFF2E7D32),
-                        icon: Icons.access_time,
-                        titleColor: const Color(0xFF2E7D32),
-                        onTap: () {
-                          // ✅ example: update state
-                          setState(() {
-                            loginTime = "09:30 AM";
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _TimeCard(
-                        title: "Logout",
-                        time: logoutTime,
-                        bg: const Color(0xFFFFE9E9),
-                        iconBg: const Color(0xFFD32F2F),
-                        icon: Icons.access_time,
-                        titleColor: const Color(0xFFD32F2F),
-                        onTap: () {
-                          // ✅ example: update state
-                          setState(() {
-                            logoutTime = "06:45 PM";
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            //   // Login / Logout cards
+            //   Container(
+            //     padding: const EdgeInsets.all(12),
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //       border: Border.all(color: Colors.black12),
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     child: Row(
+            //       children: [
+            //         // Expanded(
+            //         //   child: _TimeCard(
+            //         //     title: "Login",
+            //         //     time: loginTime,
+            //         //     bg: const Color(0xFFE9FFE6),
+            //         //     iconBg: const Color(0xFF2E7D32),
+            //         //     icon: Icons.access_time,
+            //         //     titleColor: const Color(0xFF2E7D32),
+            //         //     onTap: () {
+            //         //       // ✅ example: update state
+            //         //       setState(() {
+            //         //         loginTime = "09:30 AM";
+            //         //       });
+            //         //     },
+            //         //   ),
+            //         // ),
+            //         // const SizedBox(width: 12),
+            //         // Expanded(
+            //         //   child: _TimeCard(
+            //         //     title: "Logout",
+            //         //     time: logoutTime,
+            //         //     bg: const Color(0xFFFFE9E9),
+            //         //     iconBg: const Color(0xFFD32F2F),
+            //         //     icon: Icons.access_time,
+            //         //     titleColor: const Color(0xFFD32F2F),
+            //         //     onTap: () {
+            //         //       // ✅ example: update state
+            //         //       setState(() {
+            //         //         logoutTime = "06:45 PM";
+            //         //       });
+            //         //     },
+            //         //   ),
+            //         // ),
+            //       ],
+            //     ),
+            //   ),
 
               const SizedBox(height: 16),
 
               _OptionTile(
                 icon: Icons.info_outline,
                 label: "Personal info",
-                onTap: () {
-                  // TODO: navigate
+                onTap: () { Navigator.pushNamed(
+                  context,
+                  AppRoutes.SalesPersonPersonalInfoScreen,
+                  arguments: SalespersonalinfoArguments(roleId:  widget.roleId, roleName: widget.roleName),
+                );
                 },
               ),
               const SizedBox(height: 12),
@@ -141,8 +145,11 @@ class _SalesPersonMoreScreenState extends State<SalesPersonMoreScreen> {
               _OptionTile(
                 icon: Icons.fact_check_outlined,
                 label: "Attendance",
-                onTap: () {
-                  // TODO: navigate
+                onTap: () { Navigator.pushNamed(
+                  context,
+                  AppRoutes.SalesPersonAttendanceScreen,
+                  arguments: SalesattendanceArguments(roleId:  widget.roleId, roleName: widget.roleName),
+                );
                 },
               ),
               const SizedBox(height: 12),
@@ -168,8 +175,11 @@ class _SalesPersonMoreScreenState extends State<SalesPersonMoreScreen> {
               _OptionTile(
                 icon: Icons.privacy_tip_outlined,
                 label: "Privacy policy",
-                onTap: () {
-                  // TODO: navigate
+                onTap: () { Navigator.pushNamed(
+                  context,
+                  AppRoutes.PrivacyPolicyScreen,
+                  arguments: SalespolicyArguments(roleId:  widget.roleId, roleName: widget.roleName),
+                );
                 },
               ),
             ],
