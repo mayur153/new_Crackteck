@@ -619,7 +619,16 @@ class _SalesPersonMeetingScreenState extends State<SalesPersonMeetingScreen> {
                     right: 16,
                     bottom: 18,
                     child: InkWell(
-                      onTap: () => _snack("Add Meeting"),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.NewMeetingScreen,
+                          arguments: SalesnewmeetingArguments(
+                            roleId: widget.roleId,
+                            roleName: widget.roleName,
+                          ),
+                        );
+                      },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         height: 40,

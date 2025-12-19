@@ -111,7 +111,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
       "Sep",
       "Oct",
       "Nov",
-      "Dec"
+      "Dec",
     ];
     return "${d.day.toString().padLeft(2, '0')} ${months[d.month - 1]} ${d.year}";
   }
@@ -127,7 +127,8 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
     final list = _leads.where((lead) {
       final popupStatus = _mapStatusToPopupLabel(lead.status);
 
-      final matchesSearch = q.isEmpty ||
+      final matchesSearch =
+          q.isEmpty ||
           lead.leadId.toLowerCase().contains(q) ||
           lead.name.toLowerCase().contains(q) ||
           lead.company.toLowerCase().contains(q) ||
@@ -366,8 +367,9 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                               borderRadius: BorderRadius.circular(12),
                               child: Container(
                                 height: 46,
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
@@ -556,10 +558,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                     const SizedBox(width: 8),
                     Text(
                       label,
-                      style: TextStyle(
-                        color: fg,
-                        fontWeight: FontWeight.w900,
-                      ),
+                      style: TextStyle(color: fg, fontWeight: FontWeight.w900),
                     ),
                   ],
                 ),
@@ -683,7 +682,10 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -729,8 +731,11 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.search,
-                              color: Colors.black45, size: 20),
+                          const Icon(
+                            Icons.search,
+                            color: Colors.black45,
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
@@ -759,8 +764,10 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black12),
                       ),
-                      child: const Icon(Icons.filter_alt_outlined,
-                          color: darkGreen),
+                      child: const Icon(
+                        Icons.filter_alt_outlined,
+                        color: darkGreen,
+                      ),
                     ),
                   ),
                 ],
@@ -772,34 +779,45 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                 children: [
                   visibleLeads.isEmpty
                       ? const Center(
-                    child: Text(
-                      "No leads found",
-                      style: TextStyle(fontWeight: FontWeight.w800),
-                    ),
-                  )
+                          child: Text(
+                            "No leads found",
+                            style: TextStyle(fontWeight: FontWeight.w800),
+                          ),
+                        )
                       : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
-                    itemCount: visibleLeads.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final lead = visibleLeads[index];
-                      return _LeadCard(
-                        lead: lead,
-                        onView: () => _openLeadDetailsPopup(lead),
-                        onEdit: () => _snack(context, "Edit ${lead.leadId}"),
-                        onStatusTap: () => _snack(
-                          context,
-                          "${lead.status.label} ${lead.leadId}",
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
+                          itemCount: visibleLeads.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final lead = visibleLeads[index];
+                            return _LeadCard(
+                              lead: lead,
+                              onView: () => _openLeadDetailsPopup(lead),
+                              onEdit: () =>
+                                  _snack(context, "Edit ${lead.leadId}"),
+                              onStatusTap: () => _snack(
+                                context,
+                                "${lead.status.label} ${lead.leadId}",
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
 
                   Positioned(
                     right: 16,
                     bottom: 18,
                     child: InkWell(
-                      onTap: () => _snack(context, "Add Leads"),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.NewLeadScreen,
+                          arguments: SalesnewleadArguments(
+                            roleId: widget.roleId, // use your current user's roleId
+                            roleName: widget.roleName, // use your current user's roleName
+                          ),
+                        );
+                      },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         height: 40,
@@ -821,7 +839,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                             Icon(Icons.add, color: Colors.white, size: 18),
                             SizedBox(width: 8),
                             Text(
-                              "Add Follow-Up",
+                              "Add New Leads",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w900,

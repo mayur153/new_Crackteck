@@ -32,6 +32,11 @@ class AppRoutes {
   static const String PrivacyPolicyScreen = '/sale_policy';
   static const String SalesPersonPersonalInfoScreen = '/sale_personal_info';
   static const String SalesPersonAttendanceScreen = '/sale_personal_attendance';
+  static const String NewLeadScreen = '/sale_new_lead';
+  static const String NewFollowUpScreen = '/sale_new_follow-up';
+  static const String NewMeetingScreen = '/sale_new_meeting';
+  static const String NewQuotationScreen = '/sale_new_quotation';
+  static const String ProductScreen = '/sale_product_screen';
 
 
 }
@@ -134,4 +139,34 @@ class SalesattendanceArguments {
   final String roleName;
 
   SalesattendanceArguments({required this.roleId, required this.roleName});
+}
+class SalesnewleadArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesnewleadArguments({required this.roleId, required this.roleName});
+}
+class SalesnewfollowupArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesnewfollowupArguments({required this.roleId, required this.roleName});
+}
+class SalesnewmeetingArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesnewmeetingArguments({required this.roleId, required this.roleName});
+}
+class SalesnewquotationArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesnewquotationArguments({required this.roleId, required this.roleName});
+}
+class SalesproductArguments {
+  final int roleId;
+  final String roleName;
+
+  SalesproductArguments({required this.roleId, required this.roleName});
 }

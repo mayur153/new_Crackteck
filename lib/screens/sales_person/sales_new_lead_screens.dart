@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
+import '../../widgets/bottom_navigation.dart';
+
 class NewLeadScreen extends StatefulWidget {
-  const NewLeadScreen({super.key});
+  final int roleId;
+  final String roleName;
+
+  const NewLeadScreen({
+    Key? key,
+    required this.roleId,
+    required this.roleName,
+  }) : super(key: key);
 
   @override
   State<NewLeadScreen> createState() => _NewLeadScreenState();
@@ -9,7 +19,10 @@ class NewLeadScreen extends StatefulWidget {
 
 class _NewLeadScreenState extends State<NewLeadScreen> {
   static const Color midGreen = Color(0xFF1F8B00);
-  static const Color darkGreen = Color(0xFF145A00);
+  // static const Color darkGreen = Color(0xFF145A00);
+
+  bool _moreOpen = false;
+  int _navIndex = 0;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -45,11 +58,23 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
         ),
         title: const Text(
           'New Leads',
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: TextStyle(fontWeight: FontWeight.w700,color: Colors.white),
         ),
-        actions: const [
-          Icon(Icons.notifications_none, color: Colors.white),
-          SizedBox(width: 12),
+        actions:  [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.NotificationScreen,
+                arguments: NotificationArguments(
+                  roleId: widget.roleId,
+                  roleName: widget.roleName,
+                ),
+              );
+            },
+            icon: const Icon(Icons.notifications_none, color: Colors.white),
+          ),
+          const SizedBox(width: 8),
         ],
       ),
 
@@ -64,10 +89,15 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
               _input('Company Name ( Optional )', companyCtrl),
               _input('Designation ( Optional )', designationCtrl),
               _input('Number', numberCtrl,
-                  prefix: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text('+91'),
-                  )),
+                prefixIcon: const SizedBox(
+                  width: 52,
+                  child: Center(
+                    child: Text(
+                      '+91',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),),
               _input('Email', emailCtrl),
               _input('Address', addressCtrl),
               _input('Budget Range', budgetCtrl),
@@ -110,7 +140,7 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
               _dropdown(
                 label: 'Type',
                 value: type,
-                items: ['AMC'],
+                items: ['AMC','Non AMC'],
                 onChanged: (v) => setState(() => type = v),
               ),
 
@@ -170,7 +200,7 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
                     'Submit',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: 16,color: Colors.white
                     ),
                   ),
                 ),
@@ -179,14 +209,29 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
           ),
         ),
       ),
+
+      bottomNavigationBar: CrackteckBottomSwitcher(
+        isMoreOpen: _moreOpen,
+        currentIndex: _navIndex,
+        roleId: widget.roleId,
+        roleName: widget.roleName,
+        onHome: () {},
+        onProfile: () {},
+        onMore: () => setState(() => _moreOpen = true),
+        onLess: () => setState(() => _moreOpen = false),
+        onFollowUp: () {},
+        onMeeting: () {},
+        onQuotation: () {},
+      ),
     );
+
   }
 
   /// TEXT INPUT
   Widget _input(
       String label,
       TextEditingController controller, {
-        Widget? prefix,
+        Widget? prefixIcon,
       }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -194,7 +239,7 @@ class _NewLeadScreenState extends State<NewLeadScreen> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: prefix,
+          prefixIcon: prefixIcon,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),

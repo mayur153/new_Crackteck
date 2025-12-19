@@ -1,4 +1,3 @@
-import 'package:final_crackteck/screens/sales_person/sales_privacy_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes/app_routes.dart';

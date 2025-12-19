@@ -856,7 +856,17 @@ class _SalesPersonQuotationScreenState
                     right: 16,
                     bottom: 18,
                     child: InkWell(
-                      onTap: () => _snack("Add Quotation"),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.NewQuotationScreen,
+                          arguments: SalesnewquotationArguments
+                            (
+                            roleId: widget.roleId,
+                            roleName: widget.roleName,
+                          ),
+                        );
+                      },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         height: 40,

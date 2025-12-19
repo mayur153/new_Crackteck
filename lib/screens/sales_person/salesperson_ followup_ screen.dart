@@ -734,7 +734,16 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                     right: 16,
                     bottom: 18,
                     child: InkWell(
-                      onTap: () => _snack("Add Follow-Up"),
+                      onTap: (){
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.NewFollowUpScreen,
+                          arguments: SalesnewfollowupArguments(
+                            roleId: widget.roleId,
+                            roleName: widget.roleName,
+                          ),
+                        );
+                      },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         height: 40,
