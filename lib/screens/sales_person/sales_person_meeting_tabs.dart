@@ -605,11 +605,22 @@ class _SalesPersonMeetingScreenState extends State<SalesPersonMeetingScreen> {
                           showDialog(
                             context: context,
                             barrierDismissible: true,
-                            builder: (_) => const _MeetingCenterDialog(),
+                            builder: (_) => _MeetingCenterDialog(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
                           );
                         },
-                        onEdit: () => _snack("Edit ${list[index].meetingId}"),
-                        onStatusTap: () => _snack("Status ${list[index].pillStatus}"),
+                        onEdit: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditMeetingScreen,
+                            arguments: SaleseditmeetingArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        }, onStatusTap: () {_openFilterPopup();  },
                       );
                     },
                   ),
@@ -883,8 +894,14 @@ class _MeetingItem {
 
 const Color kDarkGreen = Color(0xFF145A00);
 
-class _MeetingCenterDialog extends StatelessWidget {
-  const _MeetingCenterDialog();
+class _MeetingCenterDialog extends StatelessWidget  {
+  final int roleId;
+  final String roleName;
+
+  const _MeetingCenterDialog({
+    required this.roleId,
+    required this.roleName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1004,7 +1021,17 @@ class _MeetingCenterDialog extends StatelessWidget {
                         label: "Edit",
                         bg: const Color(0xFFFFE6D6),
                         fg: Colors.deepOrange,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context); // close dialog first
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditMeetingScreen,
+                            arguments: SaleseditmeetingArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),

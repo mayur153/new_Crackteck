@@ -37,6 +37,10 @@ class AppRoutes {
   static const String NewMeetingScreen = '/sale_new_meeting';
   static const String NewQuotationScreen = '/sale_new_quotation';
   static const String ProductScreen = '/sale_product_screen';
+  static const String EditLeadScreen = '/sale_edit_lead';
+  static const String EditFollowUpScreen = '/sale_edit_followup';
+  static const String EditMeetingScreen = '/sale_edit_meeting';
+  static const String EditQuotationScreen = '/sale_edit_quotation';
 
 
 }
@@ -169,4 +173,28 @@ class SalesproductArguments {
   final String roleName;
 
   SalesproductArguments({required this.roleId, required this.roleName});
+}
+class SaleseditleadArguments {
+  final int roleId;
+  final String roleName;
+
+  SaleseditleadArguments({required this.roleId, required this.roleName});
+}
+class SaleseditmeetingArguments {
+  final int roleId;
+  final String roleName;
+
+  SaleseditmeetingArguments({required this.roleId, required this.roleName});
+}
+class SaleseditfollowupArguments {
+  final int roleId;
+  final String roleName;
+
+  SaleseditfollowupArguments({required this.roleId, required this.roleName});
+}
+class SaleseditquotationArguments {
+  final int roleId;
+  final String roleName;
+
+  SaleseditquotationArguments({required this.roleId, required this.roleName});
 }

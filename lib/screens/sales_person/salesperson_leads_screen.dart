@@ -637,7 +637,16 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         icon: Icons.edit_outlined,
                         bg: const Color(0xFFFFE6D6),
                         fg: Colors.deepOrange,
-                        onTap: () => _snack(context, "Edit ${lead.leadId}"),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditLeadScreen,
+                            arguments: SaleseditleadArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(width: 12),
                       actionButton(
@@ -794,12 +803,16 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                             return _LeadCard(
                               lead: lead,
                               onView: () => _openLeadDetailsPopup(lead),
-                              onEdit: () =>
-                                  _snack(context, "Edit ${lead.leadId}"),
-                              onStatusTap: () => _snack(
-                                context,
-                                "${lead.status.label} ${lead.leadId}",
-                              ),
+                              onEdit: ()  {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.EditLeadScreen,
+                                  arguments: SaleseditleadArguments(
+                                    roleId: widget.roleId,
+                                    roleName: widget.roleName,
+                                  ),
+                                );
+                              }, onStatusTap: () {_openLeadDetailsPopup(lead);  },
                             );
                           },
                         ),

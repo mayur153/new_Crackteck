@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
+import '../screens/sales_person/sale_person_edit_lead_screen.dart';
 import '../screens/sales_person/sale_person_notification.dart';
 import '../screens/sales_person/sales_add_new_meeting.dart';
 import '../screens/sales_person/sales_attendance_screen.dart';
 import '../screens/sales_person/sales_new_lead_screens.dart';
 import '../screens/sales_person/sales_new_quotation.dart';
+import '../screens/sales_person/sales_person_edit_followup_screen.dart';
+import '../screens/sales_person/sales_person_edit_meeting_screen.dart';
+import '../screens/sales_person/sales_person_edit_quotation_screen.dart';
 import '../screens/sales_person/sales_person_meeting_tabs.dart';
 import '../screens/sales_person/sales_person_sales_overview_screen.dart';
 import '../screens/sales_person/sales_personal_info_screen.dart';
@@ -233,6 +237,52 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               ProductScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+
+
+        case AppRoutes.EditLeadScreen:
+        final args = settings.arguments as SaleseditleadArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              EditLeadScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.EditFollowUpScreen:
+        final args = settings.arguments as SaleseditfollowupArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              EditFollowUpScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.EditMeetingScreen:
+        final args = settings.arguments as SaleseditmeetingArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              EditMeetingScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.EditQuotationScreen:
+        final args = settings.arguments as SaleseditquotationArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              EditQuotationScreen(roleId: args.roleId, roleName: args.roleName),
           settings: settings,
         );
 

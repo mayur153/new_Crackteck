@@ -845,8 +845,16 @@ class _SalesPersonQuotationScreenState
                       return _QuotationCard(
                         item: item,
                         onView: () => _openViewPopup(item),
-                        onEdit: () => _snack("Edit ${item.quotationId}"),
-                        onStatusTap: () => _snack("Status ${item.status}"),
+                        onEdit: () =>  {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditQuotationScreen,
+                            arguments: SaleseditquotationArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          ),
+                      }, onStatusTap: () {_openViewPopup(item);  },
                       );
                     },
                   ),
@@ -917,7 +925,7 @@ class _SalesPersonQuotationScreenState
         onLess: () => setState(() => _moreOpen = false),
         onFollowUp: () {},
         onMeeting: () {},
-        onQuotation: () {},
+        onQuotation: () {}
       ),
     );
   }

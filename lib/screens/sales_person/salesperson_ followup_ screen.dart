@@ -218,7 +218,16 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.EditFollowUpScreen,
+                                arguments: SaleseditfollowupArguments(
+                                  roleId: widget.roleId,
+                                  roleName: widget.roleName,
+                                ),
+                              );
+                            },
                             icon: const Icon(Icons.edit, color: Colors.orange),
                             label: const Text(
                               "Edit",
@@ -721,10 +730,16 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                       return FollowUpCard(
                         item: item,
                         onView: () => _showViewPopup(item),
-                        onEdit: () => _snack("Edit ${item.leadId}"),
-                        onStatusTap: () => _snack(
-                          "Status: ${statusLabel(item.status)}",
-                        ),
+                        onEdit: () =>  {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditFollowUpScreen,
+                            arguments: SaleseditfollowupArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          ),
+                      }, onStatusTap: () {_showViewPopup(item);  },
                       );
                     },
                   ),
