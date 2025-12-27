@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import '../screens/Delivery_person/delivery_dashboard.dart';
+import '../screens/Delivery_person/delivery_home_tab.dart';
+import '../screens/Delivery_person/delivery_notification.dart';
+import '../screens/Delivery_person/map_with-start.dart';
+import '../screens/Delivery_person/product_to_be_deliveried_screen.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_edit_lead_screen.dart';
@@ -214,7 +219,6 @@ class RouteGenerator {
           settings: settings,
         );
 
-
         case AppRoutes.NewQuotationScreen:
         final args = settings.arguments as SalesnewquotationArguments?;
         if (args == null) {
@@ -226,9 +230,6 @@ class RouteGenerator {
           settings: settings,
         );
 
-
-
-
         case AppRoutes.ProductScreen:
         final args = settings.arguments as SalesproductArguments?;
         if (args == null) {
@@ -239,8 +240,6 @@ class RouteGenerator {
               ProductScreen(roleId: args.roleId, roleName: args.roleName),
           settings: settings,
         );
-
-
 
         case AppRoutes.EditLeadScreen:
         final args = settings.arguments as SaleseditleadArguments?;
@@ -286,6 +285,61 @@ class RouteGenerator {
           settings: settings,
         );
 
+        //delivery man cases
+      case AppRoutes.DeliveryPersonHomeTab:
+        final args = settings.arguments as deliveryhomeArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryPersonHomeTab(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.ProductToBeDeliveredScreen:
+        final args = settings.arguments as deliveryproducttobedeliveredArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              ProductToBeDeliveredScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.DeliveryDashboard:
+        final args = settings.arguments as deliverydasboardArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryDashboard(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.DeliveryNotificationScreen:
+        final args = settings.arguments as deliverynotificationArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryNotificationScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
+
+        case AppRoutes.DeliverypickupparcelScreen:
+        final args = settings.arguments as deliverypickupparcelArguments?;
+        if (args == null) {
+          return _errorRoute('Login arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliverypickupparcelScreen(roleId: args.roleId, roleName: args.roleName),
+          settings: settings,
+        );
 
       default:
         return _errorRoute(settings.name);

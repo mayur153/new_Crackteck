@@ -1,6 +1,5 @@
 import 'package:final_crackteck/routes/app_routes.dart' hide DashboardScreen;
 import 'package:flutter/material.dart';
-import 'screens/sales_person/salesperson_dashboard.dart';
 
 import 'constants/app_strings.dart';
 
@@ -25,7 +24,7 @@ class rolesccreen extends StatelessWidget {
                   width: 107,
                   height: 109,
                   child: Image.asset(
-                    'assets/logo.png', // <-- put your logo here
+                    'assets/logo/logo.png', // <-- put your logo here
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -62,7 +61,7 @@ class rolesccreen extends StatelessWidget {
                   onTap: () {
                     _navigateToLogin(
                       context,
-                      roleId: 3,
+                      roleId: 1,
                       roleName: AppStrings.fieldExecutive,
                     );
                   },
@@ -75,7 +74,8 @@ class rolesccreen extends StatelessWidget {
                   onTap: () {
                     _navigateToLogin(
                       context,
-                      roleId: 3,
+                      roleId: 3
+                      ,
                       roleName: AppStrings.deliveryMan,
                     );
                   },
@@ -173,6 +173,21 @@ class rolesccreen extends StatelessWidget {
   //     AppRoutes.login,
   //     arguments: LoginArguments(roleId: roleId, roleName: roleName),
   //   );
+
+
+
+
+    // void _navigateToLogin(
+    //   BuildContext context, {
+    //     required int roleId,
+    //     required String roleName,
+    //   }) {
+    // Navigator.pushNamed(
+    //   context,
+    //   AppRoutes.DeliveryPersonHomeTab,
+    //   arguments: deliverydashboardArguments(roleId: roleId, roleName: roleName),
+    // );
+
     void _navigateToLogin(
       BuildContext context, {
         required int roleId,
@@ -180,9 +195,23 @@ class rolesccreen extends StatelessWidget {
       }) {
     Navigator.pushNamed(
       context,
-      AppRoutes.SalespersonDashboard,
-      arguments: SalespersonDashboard(roleId: roleId, roleName: roleName),
+      AppRoutes.DeliveryDashboard,
+      arguments: deliverydasboardArguments(roleId: roleId, roleName: roleName),
     );
+
+
+
+
+    // void _navigateToLogin(
+    //   BuildContext context, {
+    //     required int roleId,
+    //     required String roleName,
+    //   }) {
+    // Navigator.pushNamed(
+    //   context,
+    //   AppRoutes.SalespersonDashboard,
+    //   arguments: SalespersonDashboard(roleId: roleId, roleName: roleName),
+    // );
 
   }
 }
