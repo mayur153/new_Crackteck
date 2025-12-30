@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../widgets/placeholder.dart';
+import 'delivery_person_documents.dart';
+import 'delivery_person_attendance.dart';
 
 class DeliveryProfileScreen extends StatelessWidget {
   final int roleId;
@@ -96,17 +99,42 @@ class DeliveryProfileScreen extends StatelessWidget {
             _ProfileTile(
               icon: Icons.credit_card,
               label: "Documents",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DocumentsScreen()),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.fact_check_outlined,
               label: "Attendence",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeliveryPersonAttendanceScreen(
+                      roleId: roleId,
+                      roleName: roleName,
+                    ),
+                  ),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.account_balance_wallet_outlined,
               label: "Wallet",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ComingSoonScreen(
+                      roleId: roleId,
+                      roleName: roleName,
+                    ),
+                  ),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.verified_user_outlined,
