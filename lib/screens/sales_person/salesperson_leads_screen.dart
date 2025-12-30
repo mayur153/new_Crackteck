@@ -617,7 +617,17 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         icon: Icons.call,
                         bg: darkGreen,
                         fg: Colors.white,
-                        onTap: () => _snack(context, "Call ${lead.number}"),
+                        onTap: () {
+                          Navigator.pop(ctx);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(width: 12),
                       actionButton(
@@ -625,7 +635,17 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         icon: Icons.chat_bubble_outline,
                         bg: darkGreen,
                         fg: Colors.white,
-                        onTap: () => _snack(context, "Chat ${lead.leadId}"),
+                        onTap: () {
+                          Navigator.pop(ctx);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -638,6 +658,7 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         bg: const Color(0xFFFFE6D6),
                         fg: Colors.deepOrange,
                         onTap: () {
+                          Navigator.pop(ctx);
                           Navigator.pushNamed(
                             context,
                             AppRoutes.EditLeadScreen,
@@ -654,7 +675,13 @@ class _SalesPersonLeadsScreenState extends State<SalesPersonLeadsScreen> {
                         icon: Icons.delete_outline,
                         bg: const Color(0xFFFFE0E0),
                         fg: Colors.red,
-                        onTap: () => _snack(context, "Delete ${lead.leadId}"),
+                        onTap: () {
+                          setState(() {
+                            _leads.remove(lead);
+                          });
+                          Navigator.pop(ctx);
+                          _snack(context, "Lead deleted successfully");
+                        },
                       ),
                     ],
                   ),

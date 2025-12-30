@@ -608,6 +608,12 @@ class _SalesPersonMeetingScreenState extends State<SalesPersonMeetingScreen> {
                             builder: (_) => _MeetingCenterDialog(
                               roleId: widget.roleId,
                               roleName: widget.roleName,
+                              onDelete: () {
+                                setState(() {
+                                  _items.removeAt(index);
+                                });
+                                _snack("Meeting deleted");
+                              },
                             ),
                           );
                         },
@@ -897,10 +903,12 @@ const Color kDarkGreen = Color(0xFF145A00);
 class _MeetingCenterDialog extends StatelessWidget  {
   final int roleId;
   final String roleName;
+  final VoidCallback? onDelete;
 
   const _MeetingCenterDialog({
     required this.roleId,
     required this.roleName,
+    this.onDelete,
   });
 
   @override
@@ -997,7 +1005,17 @@ class _MeetingCenterDialog extends StatelessWidget  {
                       child: _GreenButton(
                         icon: Icons.call,
                         label: "Call",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1005,7 +1023,17 @@ class _MeetingCenterDialog extends StatelessWidget  {
                       child: _GreenButton(
                         icon: Icons.chat_bubble_outline,
                         label: "Chat",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -1041,7 +1069,12 @@ class _MeetingCenterDialog extends StatelessWidget  {
                         label: "Delete",
                         bg: const Color(0xFFFFE6E6),
                         fg: Colors.red,
-                        onTap: () {},
+                        onTap: () {
+                          if (onDelete != null) {
+                            onDelete!();
+                          }
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                   ],

@@ -4,59 +4,56 @@ class DeliveryBottomNavigation extends StatelessWidget {
   const DeliveryBottomNavigation({
     super.key,
     required this.currentIndex,
-    required this.onHome,
-    required this.onChat,
-    required this.onProfile,
+    required this.onTap,
   });
 
   /// 0 = Home, 1 = Chat, 2 = Profile
   final int currentIndex;
-
-  final VoidCallback onHome;
-  final VoidCallback onChat;
-  final VoidCallback onProfile;
+  final ValueChanged<int> onTap;
 
   static const Color _green = Color(0xFF1E7C10);
   static const Color _inactive = Color(0xFF8E8E93);
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x22000000),
-              blurRadius: 18,
-              offset: Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _NavItem(
-              label: 'Home',
-              icon: Icons.home,
-              isActive: currentIndex == 0,
-              onTap: onHome,
-            ),
-            _NavItem(
-              label: 'Chat',
-              icon: Icons.chat_bubble,
-              isActive: currentIndex == 1,
-              onTap: onChat,
-            ),
-            _NavItem(
-              label: 'Profile',
-              icon: Icons.person,
-              isActive: currentIndex == 2,
-              onTap: onProfile,
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _NavItem(
+                label: 'Home',
+                icon: Icons.home,
+                isActive: currentIndex == 0,
+                onTap: () => onTap(0),
+              ),
+              _NavItem(
+                label: 'Chat',
+                icon: Icons.chat_bubble,
+                isActive: currentIndex == 1,
+                onTap: () => onTap(1),
+              ),
+              _NavItem(
+                label: 'Profile',
+                icon: Icons.person,
+                isActive: currentIndex == 2,
+                onTap: () => onTap(2),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -85,13 +82,13 @@ class _NavItem extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(999),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: isActive
             ? BoxDecoration(
-          color: const Color(0xFFE7F6E5),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: _green),
-        )
+                color: const Color(0xFFE7F6E5),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: _green, width: 1.5),
+              )
             : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -101,13 +98,13 @@ class _NavItem extends StatelessWidget {
               size: 22,
               color: isActive ? _green : _inactive,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Text(
               label,
               style: TextStyle(
                 color: isActive ? _green : _inactive,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
+                fontSize: 13,
+                fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
               ),
             ),
           ],

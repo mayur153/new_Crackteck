@@ -173,7 +173,17 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.PlaceholderScreen,
+                              arguments: PlaceholderArguments(
+                                roleId: widget.roleId,
+                                roleName: widget.roleName,
+                              ),
+                            );
+                          },
                           icon: const Icon(Icons.call),
                           label: const Text("Call"),
                           style: ElevatedButton.styleFrom(
@@ -189,7 +199,17 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.PlaceholderScreen,
+                              arguments: PlaceholderArguments(
+                                roleId: widget.roleId,
+                                roleName: widget.roleName,
+                              ),
+                            );
+                          },
                           icon: const Icon(Icons.chat),
                           label: const Text("Chat"),
                           style: ElevatedButton.styleFrom(
@@ -219,6 +239,7 @@ class _SalesPersonFollowUpScreenState extends State<SalesPersonFollowUpScreen> {
                           ),
                           child: TextButton.icon(
                             onPressed: () {
+                              Navigator.pop(ctx); // close dialog
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.EditFollowUpScreen,

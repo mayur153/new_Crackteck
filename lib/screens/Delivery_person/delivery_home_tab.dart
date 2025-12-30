@@ -2,7 +2,6 @@ import 'package:final_crackteck/screens/Delivery_person/product_to_be_deliveried
 import 'package:flutter/material.dart';
 
 import '../../routes/app_routes.dart';
-import 'delivery_notification.dart';
 
 
 class DeliveryPersonHomeTab extends StatefulWidget {
@@ -214,10 +213,7 @@ class _DeliveryPersonHomeTabState extends State<DeliveryPersonHomeTab> {
                       title: ordersTitle,
                       orders: visibleOrders,
                       onAccept: (order) {
-                        if (order.accepted) {
-                          _toast('Already accepted');
-                          return;
-                        }
+                        // Allow clicking even if accepted to go back to product screen
                         _openProductScreen(order);
                       },
                     ),
@@ -784,10 +780,9 @@ class OrderCard extends StatelessWidget {
             child: SizedBox(
               height: 34,
               child: ElevatedButton(
-                onPressed: order.accepted ? null : onAccept,
+                onPressed: onAccept, // Always clickable as requested
                 style: ElevatedButton.styleFrom(
                   backgroundColor: green,
-                  disabledBackgroundColor: Colors.black12,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

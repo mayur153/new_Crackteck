@@ -25,12 +25,12 @@ class DeliveryNotificationScreen extends StatelessWidget {
         backgroundColor: green,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           "Notification",
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 18),
         ),
         actions: [
           IconButton(

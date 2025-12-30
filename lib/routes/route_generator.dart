@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import '../screens/Delivery_person/delivery_dashboard.dart';
+import '../screens/Delivery_person/delivery_done_screen.dart';
 import '../screens/Delivery_person/delivery_home_tab.dart';
 import '../screens/Delivery_person/delivery_notification.dart';
+import '../screens/Delivery_person/delivery_detail_screen.dart';
 import '../screens/Delivery_person/map_with-start.dart';
 import '../screens/Delivery_person/product_to_be_deliveried_screen.dart';
+import '../screens/Delivery_person/delivery_otp_screen.dart';
+import '../screens/Delivery_person/delivery_otp_verification_screen.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_edit_lead_screen.dart';
@@ -28,6 +32,7 @@ import '../login_screen.dart';
 import '../role_screen.dart';
 import '../screens/sales_person/salesperson_leads_screen.dart';
 import '../screens/sales_person/salesperson_profile_tab.dart';
+import '../widgets/placeholder.dart';
 import 'app_routes.dart' hide DashboardScreen;
 
 
@@ -300,11 +305,15 @@ class RouteGenerator {
         case AppRoutes.ProductToBeDeliveredScreen:
         final args = settings.arguments as deliveryproducttobedeliveredArguments?;
         if (args == null) {
-          return _errorRoute('Login arguments missing');
+          return _errorRoute('Arguments missing');
         }
         return MaterialPageRoute(
           builder: (_) =>
-              ProductToBeDeliveredScreen(roleId: args.roleId, roleName: args.roleName),
+              ProductToBeDeliveredScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                orderId: args.orderId,
+              ),
           settings: settings,
         );
 
@@ -315,7 +324,11 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) =>
-              DeliveryDashboard(roleId: args.roleId, roleName: args.roleName),
+              DeliveryDashboard(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                initialIndex: args.initialIndex,
+              ),
           settings: settings,
         );
 
@@ -333,11 +346,87 @@ class RouteGenerator {
         case AppRoutes.DeliverypickupparcelScreen:
         final args = settings.arguments as deliverypickupparcelArguments?;
         if (args == null) {
-          return _errorRoute('Login arguments missing');
+          return _errorRoute('Arguments missing');
         }
         return MaterialPageRoute(
           builder: (_) =>
-              DeliverypickupparcelScreen(roleId: args.roleId, roleName: args.roleName),
+              DeliverypickupparcelScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                orderId: args.orderId,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryOtpScreen:
+        final args = settings.arguments as deliveryotpArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryOtpScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                orderId: args.orderId,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryOtpVerificationScreen:
+        final args = settings.arguments as deliveryotpverificationArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryOtpVerificationScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                orderId: args.orderId,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryDoneScreen:
+        final args = settings.arguments as deliverydoneArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryDoneScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryDetailScreen:
+        final args = settings.arguments as deliverydetailArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryDetailsScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.PlaceholderScreen:
+        final args = settings.arguments as PlaceholderArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              ComingSoonScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
           settings: settings,
         );
 
@@ -355,4 +444,3 @@ class RouteGenerator {
     );
   }
 }
-

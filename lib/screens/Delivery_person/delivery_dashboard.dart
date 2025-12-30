@@ -9,11 +9,13 @@ import 'delivery_profile_tab.dart';
 class DeliveryDashboard extends StatefulWidget {
   final int roleId;
   final String roleName;
+  final int initialIndex;
 
   const DeliveryDashboard({
     super.key,
     required this.roleId,
     required this.roleName,
+    this.initialIndex = 0,
   });
 
   @override
@@ -22,13 +24,14 @@ class DeliveryDashboard extends StatefulWidget {
 
 class _DeliveryDashboardState extends State<DeliveryDashboard> {
   /// 0 = Home, 1 = Chat / Orders, 2 = Profile
-  int _currentIndex = 0;
+  late int _currentIndex;
 
   late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex;
 
     _screens = [
       /// 🏠 HOME
@@ -58,17 +61,8 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
 
       bottomNavigationBar: DeliveryBottomNavigation(
         currentIndex: _currentIndex,
-
-        onHome: () {
-          setState(() => _currentIndex = 0);
-        },
-
-        onChat: () {
-          setState(() => _currentIndex = 1);
-        },
-
-        onProfile: () {
-          setState(() => _currentIndex = 2);
+        onTap: (index) {
+          setState(() => _currentIndex = index);
         },
       ),
     );

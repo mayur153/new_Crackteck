@@ -48,6 +48,12 @@
     static const String DeliveryDashboard = '/delivery_dashboard';
     static const String DeliveryNotificationScreen = '/delivery_notification';
     static const String DeliverypickupparcelScreen = '/delivery_pickup_parcel';
+    static const String DeliveryOtpScreen = '/delivery_otp_screen';
+    static const String DeliveryOtpVerificationScreen = '/delivery_otp_verification';
+    static const String DeliveryDoneScreen = '/delivery_done';
+    static const String DeliveryDetailScreen = '/delivery_detail';
+
+    static const String PlaceholderScreen = '/placeholder';
 
 
   }
@@ -214,14 +220,16 @@
   class deliveryproducttobedeliveredArguments {
     final int roleId;
     final String roleName;
+    final String orderId;
 
-    deliveryproducttobedeliveredArguments({required this.roleId, required this.roleName});
+    deliveryproducttobedeliveredArguments({required this.roleId, required this.roleName, required this.orderId});
   }
   class deliverydasboardArguments {
     final int roleId;
     final String roleName;
+    final int initialIndex;
 
-    deliverydasboardArguments({required this.roleId, required this.roleName});
+    deliverydasboardArguments({required this.roleId, required this.roleName, this.initialIndex = 0});
   }
   class deliverynotificationArguments {
     final int roleId;
@@ -232,6 +240,39 @@
   class deliverypickupparcelArguments {
     final int roleId;
     final String roleName;
+    final String orderId;
 
-    deliverypickupparcelArguments({required this.roleId, required this.roleName});
+    deliverypickupparcelArguments({required this.roleId, required this.roleName, required this.orderId});
+  }
+  class deliveryotpArguments {
+    final int roleId;
+    final String roleName;
+    final String orderId;
+
+    deliveryotpArguments({required this.roleId, required this.roleName, required this.orderId});
+  }
+  class PlaceholderArguments {
+    final int roleId;
+    final String roleName;
+
+    PlaceholderArguments({required this.roleId, required this.roleName});
+  }
+  class deliveryotpverificationArguments {
+    final int roleId;
+    final String roleName;
+    final String orderId;
+
+    deliveryotpverificationArguments({required this.roleId, required this.roleName, required this.orderId});
+  }
+  class deliverydoneArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverydoneArguments({required this.roleId, required this.roleName});
+  }
+  class deliverydetailArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverydetailArguments({required this.roleId, required this.roleName});
   }

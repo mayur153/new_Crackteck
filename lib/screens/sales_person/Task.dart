@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../routes/app_routes.dart';
 import '../../widgets/bottom_navigation.dart';
+import 'salesperson_dashboard.dart'; // ✅ To access dialog methods
 
 class TaskScreen extends StatefulWidget {
   final int roleId;
   final String roleName;
 
-  // const SalespersonDashboard({super.key});
   const TaskScreen({Key? key, required this.roleId, required this.roleName})
       : super(key: key);
 
@@ -23,16 +23,9 @@ class _TaskScreenState extends State<TaskScreen> {
   bool _moreOpen = false;
   int _navIndex = 0;
 
-  // ✅ selected date (drives month + week + tasks)
   late DateTime _selectedDate;
-
-  // ✅ week view (Mon–Sat)
   late List<DateTime> _weekMonToSat;
-
-  // ✅ month dropdown label
   late String _monthLabel;
-
-  // Dummy tasks; add `date:` so we can filter by selected date
   late List<_TaskItem> _allTasks;
 
   @override
@@ -72,7 +65,6 @@ class _TaskScreenState extends State<TaskScreen> {
         leftLabels: ["Lead ID", "Meeting ID", "Number", "Location"],
         rightValues: ["L-001", "M-001", "+91 **** ****", "ABC Corp HQ"],
       ),
-      // Example task on another day (to show filtering works)
       _TaskItem(
         date: _selectedDate.add(const Duration(days: 1)),
         time: "1:00 Pm",
@@ -82,8 +74,6 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
     ];
   }
-
-  // ------------------ date helpers ------------------
 
   DateTime _stripTime(DateTime d) => DateTime(d.year, d.month, d.day);
 
@@ -96,7 +86,6 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   List<DateTime> _weekFromDate(DateTime date) {
-    // Monday is 1
     final monday = date.subtract(Duration(days: date.weekday - 1));
     return List.generate(6, (i) => _stripTime(monday.add(Duration(days: i))));
   }
@@ -114,12 +103,11 @@ class _TaskScreenState extends State<TaskScreen> {
     setState(() {
       _selectedDate = clean;
       _weekMonToSat = _weekFromDate(clean);
-      _monthLabel = _monthName(clean.month); // ✅ month auto changes on date tap
+      _monthLabel = _monthName(clean.month);
     });
   }
 
   void _setMonth(int newMonth) {
-    // Keep same day if possible, else clamp to last day of new month
     final maxDay = _daysInMonth(_selectedDate.year, newMonth);
     final newDay = math.min(_selectedDate.day, maxDay);
     final newDate = DateTime(_selectedDate.year, newMonth, newDay);
@@ -147,8 +135,6 @@ class _TaskScreenState extends State<TaskScreen> {
       _setSelectedDate(picked);
     }
   }
-
-  // ------------------ UI ------------------
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +188,6 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Month dropdown + calendar icon (both clickable)
             Row(
               children: [
                 _MonthDropdown(
@@ -236,7 +221,6 @@ class _TaskScreenState extends State<TaskScreen> {
 
             const SizedBox(height: 14),
 
-            // Week row (Mon–Sat) ✅ clickable + highlights selected + month changes automatically
             _WeekStrip(
               dates: _weekMonToSat,
               selectedDate: _selectedDate,
@@ -246,7 +230,6 @@ class _TaskScreenState extends State<TaskScreen> {
 
             const SizedBox(height: 14),
 
-            // Timeline list (cards + view button are clickable)
             if (tasks.isEmpty)
               Container(
                 width: double.infinity,
@@ -263,11 +246,21 @@ class _TaskScreenState extends State<TaskScreen> {
             else
               _TimelineList(
                 tasks: tasks,
+                roleId: widget.roleId,
+                roleName: widget.roleName,
                 onCardTap: (t) {
-                  // TODO: open task details
+                  if (t.title == "Follow Up") {
+                    showFollowUpDialog(context, widget.roleId, widget.roleName);
+                  } else {
+                    showMeetingDialog(context, widget.roleId, widget.roleName);
+                  }
                 },
                 onViewTap: (t) {
-                  // TODO: open task details
+                  if (t.title == "Follow Up") {
+                    showFollowUpDialog(context, widget.roleId, widget.roleName);
+                  } else {
+                    showMeetingDialog(context, widget.roleId, widget.roleName);
+                  }
                 },
               ),
           ],
@@ -428,11 +421,15 @@ class _WeekStrip extends StatelessWidget {
 
 class _TimelineList extends StatelessWidget {
   final List<_TaskItem> tasks;
+  final int roleId;
+  final String roleName;
   final ValueChanged<_TaskItem> onCardTap;
   final ValueChanged<_TaskItem> onViewTap;
 
   const _TimelineList({
     required this.tasks,
+    required this.roleId,
+    required this.roleName,
     required this.onCardTap,
     required this.onViewTap,
   });
@@ -492,15 +489,25 @@ class _TimelineRow extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 6),
-                Expanded(
-                  child: Container(
-                    width: 2,
-                    decoration: BoxDecoration(
-                      color: Colors.black26,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: const Color(0xFF145A00), width: 2),
                   ),
                 ),
+                if (!isLast)
+                  Expanded(
+                    child: Container(
+                      width: 2,
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
                 if (!isLast) const SizedBox(height: 10),
               ],
             ),

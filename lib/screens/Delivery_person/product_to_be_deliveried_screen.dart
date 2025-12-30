@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../routes/app_routes.dart';
 
 
 class ProductToBeDeliveredScreen extends StatefulWidget {
@@ -78,8 +79,21 @@ class _ProductToBeDeliveredScreenState extends State<ProductToBeDeliveredScreen>
     if (_accepted) return;
     setState(() => _accepted = true);
 
-    // ✅ return TRUE to dashboard (dashboard will mark accepted)
-    Navigator.pop(context, true);
+    // ✅ Navigate to Map Screen
+    Navigator.pushNamed(
+      context,
+      AppRoutes.DeliverypickupparcelScreen,
+      arguments: deliverypickupparcelArguments(
+        roleId: widget.roleId,
+        roleName: widget.roleName,
+        orderId: widget.orderId,
+      ),
+    ).then((_) {
+      // ✅ Safety check: only pop if we are still on this screen
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    });
   }
 
   void _onNotificationTap() {
@@ -203,8 +217,6 @@ class _ProductToBeDeliveredScreenState extends State<ProductToBeDeliveredScreen>
             ),
           ],
         ),
-
-
 
       ),
     );

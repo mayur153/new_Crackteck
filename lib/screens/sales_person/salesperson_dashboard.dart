@@ -8,7 +8,6 @@ class SalespersonDashboard extends StatefulWidget {
   final int roleId;
   final String roleName;
 
-  // const SalespersonDashboard({super.key});
   const SalespersonDashboard({Key? key, required this.roleId, required this.roleName})
       : super(key: key);
 
@@ -44,10 +43,9 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
     );
 
     if (shouldLogout == true) {
-      // ✅ Go to Role Selection screen and remove all previous screens
       Navigator.pushNamedAndRemoveUntil(
         context,
-        AppRoutes.roleSelection, // 🔁 change this to your actual route name
+        AppRoutes.roleSelection,
             (route) => false,
       );
     }
@@ -60,6 +58,43 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
  double achieved = 9000;
  double pending = 1000;
 
+ // Dummy data for tasks on dashboard
+  final List<_MiniTaskData> _dashboardTasks = [
+    _MiniTaskData(
+      type: "Meeting",
+      secondLabel: "Meeting ID",
+      secondValue: "M-001",
+      leadId: "L-001",
+      number: "+91 **** ****",
+      location: "ABC Corp HQ",
+    ),
+    _MiniTaskData(
+      type: "Follow Up",
+      secondLabel: "Follow up ID",
+      secondValue: "F-010",
+      leadId: "L-002",
+      number: "+91 **** ****",
+      location: "Client Location",
+    ),
+    _MiniTaskData(
+      type: "Meeting",
+      secondLabel: "Meeting ID",
+      secondValue: "M-003",
+      leadId: "L-003",
+      number: "+91 **** ****",
+      location: "Office Visit",
+    ),
+    _MiniTaskData(
+      type: "Follow Up",
+      secondLabel: "Follow up ID",
+      secondValue: "F-014",
+      leadId: "L-004",
+      number: "+91 **** ****",
+      location: "ABC Corp HQ",
+    ),
+  ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +102,6 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // ✅ AppBar with gradient
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 70,
@@ -99,17 +133,21 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
           ],
         ),
         actions: [
-          // ✅ Attendance
           IconButton(
             tooltip: "Attendance",
             onPressed: () {
-              // TODO: navigate to attendance
-              // Navigator.pushNamed(context, AppRoutes.attendance);
+              Navigator.pushNamed(
+                context,
+                AppRoutes.SalesPersonAttendanceScreen,
+                arguments: SalesattendanceArguments(
+                  roleId: widget.roleId,
+                  roleName: widget.roleName,
+                ),
+              );
             },
             icon: const Icon(Icons.how_to_reg_outlined, color: Colors.white),
           ),
 
-          // ✅ Notifications (existing)
           IconButton(
             onPressed: () {
               Navigator.pushNamed(
@@ -124,7 +162,6 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
             icon: const Icon(Icons.notifications_none, color: Colors.white),
           ),
 
-          // ✅ Logout
           IconButton(
             tooltip: "Logout",
             onPressed: _confirmLogout,
@@ -136,9 +173,8 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
       ),
 
 
-      // ✅ Body
       body: Transform.translate(
-        offset: const Offset(0, -18), // overlap look
+        offset: const Offset(0, -18),
         child: Container(
           width: double.infinity,
           decoration: const BoxDecoration(
@@ -158,7 +194,61 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
 
                 const SizedBox(height: 10),
 
-                const _TodayTaskList(),
+                // Updated to use local list and handle delete
+                SizedBox(
+                  height: 155,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _dashboardTasks.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 12),
+                    itemBuilder: (context, index) {
+                      final item = _dashboardTasks[index];
+
+                      return _TaskCard(
+                        title: item.type,
+                        leadId: item.leadId,
+                        secondLabel: item.secondLabel,
+                        secondValue: item.secondValue,
+                        number: item.number,
+                        location: item.location,
+                        onView: () {
+                          if (item.type == "Follow Up") {
+                            showFollowUpDialog(
+                              context,
+                              widget.roleId,
+                              widget.roleName,
+                              onDelete: () {
+                                setState(() {
+                                  _dashboardTasks.removeAt(index);
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Follow-up deleted")),
+                                );
+                              },
+                            );
+                          } else {
+                            showMeetingDialog(
+                              context,
+                              widget.roleId,
+                              widget.roleName,
+                              onDelete: () {
+                                setState(() {
+                                  _dashboardTasks.removeAt(index);
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Meeting deleted")),
+                                );
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(height: 16),
 
 
@@ -203,8 +293,8 @@ class _SalespersonDashboardState extends State<SalespersonDashboard> {
         roleId: widget.roleId,
         roleName: widget.roleName,
 
-        onHome: () { /* your home navigation */ },
-        onProfile: () { /* your profile navigation */ },
+        onHome: () {},
+        onProfile: () {},
         onMore: () => setState(() => _moreOpen = true),
         onLess: () => setState(() => _moreOpen = false),
 
@@ -272,80 +362,6 @@ class _TodayTaskHeader extends StatelessWidget {
   }
 }
 
-
-class _TodayTaskList extends StatelessWidget {
-  const _TodayTaskList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final items = <_MiniTaskData>[
-      _MiniTaskData(
-        type: "Meeting",
-        secondLabel: "Meeting ID",
-        secondValue: "M-001",
-        leadId: "L-001",
-        number: "+91 **** ****",
-        location: "ABC Corp HQ",
-      ),
-      _MiniTaskData(
-        type: "Follow Up",
-        secondLabel: "Follow up ID",
-        secondValue: "F-010",
-        leadId: "L-002",
-        number: "+91 **** ****",
-        location: "Client Location",
-      ),
-      _MiniTaskData(
-        type: "Meeting",
-        secondLabel: "Meeting ID",
-        secondValue: "M-003",
-        leadId: "L-003",
-        number: "+91 **** ****",
-        location: "Office Visit",
-      ),
-      _MiniTaskData(
-        type: "Follow Up",
-        secondLabel: "Follow up ID",
-        secondValue: "F-014",
-        leadId: "L-004",
-        number: "+91 **** ****",
-        location: "ABC Corp HQ",
-      ),
-    ];
-
-    return SizedBox(
-      height: 155,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        primary: false,
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final item = items[index];
-
-          return _TaskCard(
-            title: item.type, // "Meeting" or "Follow Up"
-            leadId: item.leadId,
-            secondLabel: item.secondLabel,
-            secondValue: item.secondValue,
-            number: item.number,
-            location: item.location,
-            onView: () {
-              if (item.type == "Follow Up") {
-                showFollowUpDialog(context);
-              } else {
-                showMeetingDialog(context);
-              }
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
 class _MiniTaskData {
   final String type;
   final String secondLabel;
@@ -365,13 +381,8 @@ class _MiniTaskData {
 }
 
 
-// ✅ small model just for this list
-
-
 class _TaskCard extends StatelessWidget {
   final String title, leadId, secondValue, number, location;
-
-  // ✅ NEW: label for 2nd row
   final String secondLabel;
   final VoidCallback onView;
 
@@ -379,7 +390,7 @@ class _TaskCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.leadId,
-    required this.secondValue, // was followUpId
+    required this.secondValue,
     required this.number,
     required this.location,
     this.secondLabel = "Follow up ID",
@@ -407,7 +418,6 @@ class _TaskCard extends StatelessWidget {
                 child: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
               ),
 
-              // ✅ View button tap
               InkWell(
                 onTap: onView,
                 borderRadius: BorderRadius.circular(8),
@@ -430,7 +440,7 @@ class _TaskCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           _kv("Lead ID", leadId),
-          _kv(secondLabel, secondValue), // ✅ Meeting ID OR Title OR Follow up ID
+          _kv(secondLabel, secondValue),
           _kv("Number", number),
           _kv("Location", location),
         ],
@@ -499,7 +509,6 @@ class SalesOverviewSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-        // MAIN CARD
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
@@ -511,7 +520,6 @@ class SalesOverviewSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Dropdown + Legend row
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -528,11 +536,10 @@ class SalesOverviewSection extends StatelessWidget {
                           value: reportValue,
                           isExpanded: true,
                           style: const TextStyle(
-                            fontSize: 12,          // ✅ reduce size here
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black,   // keep readable
+                            color: Colors.black,
                           ),
-                          // small green circle arrow like image
 
                           icon: Container(
                             width: 22,
@@ -582,7 +589,6 @@ class SalesOverviewSection extends StatelessWidget {
 
               const SizedBox(height: 14),
 
-              // INNER CHART BOX (bordered) like image
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
@@ -627,7 +633,6 @@ class SalesOverviewSection extends StatelessWidget {
 
         const SizedBox(height: 14),
 
-        // DETAILS BUTTON like image
         SizedBox(
           width: double.infinity,
           height: 56,
@@ -711,7 +716,6 @@ class _DonutChart extends StatelessWidget {
           size: const Size(double.infinity, double.infinity),
         ),
 
-        // Center text
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -730,7 +734,6 @@ class _DonutChart extends StatelessWidget {
           ],
         ),
 
-        // Left / Right labels like image
         Positioned(
           left: 0,
           bottom: 54,
@@ -812,10 +815,8 @@ class _DonutPainter extends CustomPainter {
       ..strokeCap = StrokeCap.butt
       ..color = pendingColor;
 
-    // background ring
     canvas.drawCircle(center, radius, bgPaint);
 
-    // start angle -> light segment at bottom-right like your image
     final start = -math.pi / 2 + 0.35;
 
     final achievedSweep = 2 * math.pi * achievedPct;
@@ -836,7 +837,6 @@ class _DonutPainter extends CustomPainter {
       pendingPaint,
     );
 
-    // donut hole
     final holePaint = Paint()..color = Colors.white;
     canvas.drawCircle(center, radius - 42, holePaint);
   }
@@ -858,21 +858,21 @@ const Color kDarkGreen = Color(0xFF145A00);
 /// =======================
 /// OPENERS
 /// =======================
-void showFollowUpDialog(BuildContext context) {
+void showFollowUpDialog(BuildContext context, int roleId, String roleName, {VoidCallback? onDelete}) {
   showDialog(
     context: context,
-    barrierDismissible: true, // ✅ tap outside closes
+    barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.35),
-    builder: (_) => const _FollowUpCenterDialog(),
+    builder: (_) => _FollowUpCenterDialog(roleId: roleId, roleName: roleName, onDelete: onDelete),
   );
 }
 
-void showMeetingDialog(BuildContext context) {
+void showMeetingDialog(BuildContext context, int roleId, String roleName, {VoidCallback? onDelete}) {
   showDialog(
     context: context,
-    barrierDismissible: true, // ✅ tap outside closes
+    barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.35),
-    builder: (_) => const _MeetingCenterDialog(),
+    builder: (_) => _MeetingCenterDialog(roleId: roleId, roleName: roleName, onDelete: onDelete),
   );
 }
 
@@ -880,7 +880,11 @@ void showMeetingDialog(BuildContext context) {
 /// FOLLOW-UP CENTER POPUP
 /// =======================
 class _FollowUpCenterDialog extends StatelessWidget {
-  const _FollowUpCenterDialog();
+  final int roleId;
+  final String roleName;
+  final VoidCallback? onDelete;
+
+  const _FollowUpCenterDialog({required this.roleId, required this.roleName, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -897,7 +901,6 @@ class _FollowUpCenterDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -912,7 +915,7 @@ class _FollowUpCenterDialog extends StatelessWidget {
               const SizedBox(height: 12),
 
               const _KVRow(label: "Lead ID", value: "L-001"),
-              const _KVRow(label: "Number", value: "+91 **** ****"),
+              const _KVRow(label: "Number", value: "+91 **** ****",),
               const _KVRow(label: "Name", value: "Khushi Yadav"),
               const _KVRow(label: "Email", value: "example@gmail.com"),
               const _KVRow(label: "Date", value: "02/04/2025"),
@@ -939,7 +942,17 @@ class _FollowUpCenterDialog extends StatelessWidget {
                     child: _GreenButton(
                       icon: Icons.call,
                       label: "Call",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.PlaceholderScreen,
+                          arguments: PlaceholderArguments(
+                            roleId: roleId,
+                            roleName: roleName,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -947,7 +960,17 @@ class _FollowUpCenterDialog extends StatelessWidget {
                     child: _GreenButton(
                       icon: Icons.chat_bubble_outline,
                       label: "Chat",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.PlaceholderScreen,
+                          arguments: PlaceholderArguments(
+                            roleId: roleId,
+                            roleName: roleName,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -963,7 +986,17 @@ class _FollowUpCenterDialog extends StatelessWidget {
                       label: "Edit",
                       bg: const Color(0xFFFFE6D6),
                       fg: Colors.deepOrange,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.EditFollowUpScreen,
+                          arguments: SaleseditfollowupArguments(
+                            roleId: roleId,
+                            roleName: roleName,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -973,7 +1006,12 @@ class _FollowUpCenterDialog extends StatelessWidget {
                       label: "Delete",
                       bg: const Color(0xFFFFE6E6),
                       fg: Colors.red,
-                      onTap: () {},
+                      onTap: () {
+                        if (onDelete != null) {
+                          onDelete!();
+                        }
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                 ],
@@ -990,7 +1028,11 @@ class _FollowUpCenterDialog extends StatelessWidget {
 /// MEETING CENTER POPUP
 /// =======================
 class _MeetingCenterDialog extends StatelessWidget {
-  const _MeetingCenterDialog();
+  final int roleId;
+  final String roleName;
+  final VoidCallback? onDelete;
+
+  const _MeetingCenterDialog({required this.roleId, required this.roleName, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -1005,7 +1047,6 @@ class _MeetingCenterDialog extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
           ),
           child: SingleChildScrollView(
-            // ✅ meeting popup is bigger, scroll if needed
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -1086,7 +1127,17 @@ class _MeetingCenterDialog extends StatelessWidget {
                       child: _GreenButton(
                         icon: Icons.call,
                         label: "Call",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1094,7 +1145,17 @@ class _MeetingCenterDialog extends StatelessWidget {
                       child: _GreenButton(
                         icon: Icons.chat_bubble_outline,
                         label: "Chat",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.PlaceholderScreen,
+                            arguments: PlaceholderArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -1110,7 +1171,17 @@ class _MeetingCenterDialog extends StatelessWidget {
                         label: "Edit",
                         bg: const Color(0xFFFFE6D6),
                         fg: Colors.deepOrange,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.EditMeetingScreen,
+                            arguments: SaleseditmeetingArguments(
+                              roleId: roleId,
+                              roleName: roleName,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1120,7 +1191,12 @@ class _MeetingCenterDialog extends StatelessWidget {
                         label: "Delete",
                         bg: const Color(0xFFFFE6E6),
                         fg: Colors.red,
-                        onTap: () {},
+                        onTap: () {
+                          if (onDelete != null) {
+                            onDelete!();
+                          }
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                   ],

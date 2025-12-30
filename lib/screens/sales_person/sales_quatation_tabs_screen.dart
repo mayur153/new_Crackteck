@@ -35,7 +35,7 @@ class _SalesPersonQuotationScreenState
   DateTime? _selectedDate;
 
   // Demo list (replace with API later)
-  final List<_QuotationItem> _items = const [
+  final List<_QuotationItem> _items = [
     _QuotationItem(
       leadId: "L-001",
       quotationId: "QTN-001",
@@ -610,6 +610,17 @@ class _SalesPersonQuotationScreenState
                       _snack("Download tapped");
                     },
                   ),
+                  const SizedBox(height: 10),
+                  _bigDeleteButton(
+                    label: "Delete",
+                    onTap: () {
+                      setState(() {
+                        _items.remove(item);
+                      });
+                      Navigator.pop(ctx);
+                      _snack("Quotation deleted");
+                    },
+                  ),
                 ],
               ),
             ),
@@ -725,6 +736,32 @@ class _SalesPersonQuotationScreenState
           label,
           style: const TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget _bigDeleteButton({
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        height: 42,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFE0E0),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.red,
             fontWeight: FontWeight.w900,
           ),
         ),
