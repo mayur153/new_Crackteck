@@ -52,6 +52,8 @@
     static const String DeliveryOtpVerificationScreen = '/delivery_otp_verification';
     static const String DeliveryDoneScreen = '/delivery_done';
     static const String DeliveryDetailScreen = '/delivery_detail';
+    static const String DeliveryPrivacyPolicyScreen = '/delivery_privacy_policy';
+    static const String DeliveryTermsConditionScreen = '/delivery_terms_condition';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -275,4 +277,16 @@
     final String roleName;
 
     deliverydetailArguments({required this.roleId, required this.roleName});
+  }
+  class deliverypolicyArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverypolicyArguments({required this.roleId, required this.roleName});
+  }
+  class deliverytermsArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverytermsArguments({required this.roleId, required this.roleName});
   }

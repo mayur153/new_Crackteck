@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import '../../routes/app_routes.dart';
 import '../../widgets/placeholder.dart';
 import 'delivery_person_documents.dart';
 import 'delivery_person_attendance.dart';
+import 'delivery_feedback.dart';
+import 'delivery_track_order.dart';
+import 'delivery_notification.dart';
 
 class DeliveryProfileScreen extends StatelessWidget {
   final int roleId;
   final String roleName;
   final int currentIndex; // which tab is active in bottom nav
 
-
   const DeliveryProfileScreen({
-    Key? key,
+    super.key,
     required this.roleId,
     required this.roleName,
     this.currentIndex = 0,
-
-  }) : super(key: key);
+  });
 
   static const Color green = Color(0xFF1E7C10);
 
@@ -34,12 +36,22 @@ class DeliveryProfileScreen extends StatelessWidget {
         ),
         title: const Text(
           "Personal Information",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize:18,color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DeliveryNotificationScreen(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -144,12 +156,27 @@ class DeliveryProfileScreen extends StatelessWidget {
             _ProfileTile(
               icon: Icons.location_on_outlined,
               label: "Track Your Work",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TotalDeliveryScreen(
+                      roleId: roleId,
+                      roleName: roleName,
+                    ),
+                  ),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.feedback_outlined,
               label: "Feedback's",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FeedbackScreen()),
+                );
+              },
             ),
 
             const SizedBox(height: 16),
@@ -157,12 +184,30 @@ class DeliveryProfileScreen extends StatelessWidget {
             _ProfileTile(
               icon: Icons.description_outlined,
               label: "Terms Of service",
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.DeliveryTermsConditionScreen,
+                  arguments: deliverytermsArguments(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.privacy_tip_outlined,
               label: "Privacy policy",
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.DeliveryPrivacyPolicyScreen,
+                  arguments: deliverypolicyArguments(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
+                );
+              },
             ),
             _ProfileTile(
               icon: Icons.headset_mic_outlined,

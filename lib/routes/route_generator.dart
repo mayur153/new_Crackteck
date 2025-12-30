@@ -4,6 +4,8 @@ import '../screens/Delivery_person/delivery_done_screen.dart';
 import '../screens/Delivery_person/delivery_home_tab.dart';
 import '../screens/Delivery_person/delivery_notification.dart';
 import '../screens/Delivery_person/delivery_detail_screen.dart';
+import '../screens/Delivery_person/delivery_privacy_policy.dart';
+import '../screens/Delivery_person/delivery_terms_condition.dart';
 import '../screens/Delivery_person/map_with-start.dart';
 import '../screens/Delivery_person/product_to_be_deliveried_screen.dart';
 import '../screens/Delivery_person/delivery_otp_screen.dart';
@@ -424,6 +426,34 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               ComingSoonScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+        case AppRoutes.DeliveryPrivacyPolicyScreen:
+        final args = settings.arguments as deliverypolicyArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryPrivacyPolicyScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+        case AppRoutes.DeliveryTermsConditionScreen:
+        final args = settings.arguments as deliverytermsArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryTermsConditionScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
               ),
