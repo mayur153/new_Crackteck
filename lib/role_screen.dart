@@ -74,8 +74,7 @@ class rolesccreen extends StatelessWidget {
                   onTap: () {
                     _navigateToLogin(
                       context,
-                      roleId: 3
-                      ,
+                      roleId: 3,
                       roleName: AppStrings.deliveryMan,
                     );
                   },
@@ -177,28 +176,39 @@ class rolesccreen extends StatelessWidget {
 
 
 
-    // void _navigateToLogin(
-    //   BuildContext context, {
-    //     required int roleId,
-    //     required String roleName,
-    //   }) {
-    // Navigator.pushNamed(
-    //   context,
-    //   AppRoutes.DeliveryPersonHomeTab,
-    //   arguments: deliverydashboardArguments(roleId: roleId, roleName: roleName),
-    // );
+  // void _navigateToLogin(
+  //   BuildContext context, {
+  //     required int roleId,
+  //     required String roleName,
+  //   }) {
+  // Navigator.pushNamed(
+  //   context,
+  //   AppRoutes.DeliveryPersonHomeTab,
+  //   arguments: deliverydashboardArguments(roleId: roleId, roleName: roleName),
+  // );
 
-    void _navigateToLogin(
+  void _navigateToLogin(
       BuildContext context, {
         required int roleId,
         required String roleName,
       }) {
     Navigator.pushNamed(
       context,
-      AppRoutes.DeliveryDashboard,
-      arguments: deliverydasboardArguments(roleId: roleId, roleName: roleName),
+      AppRoutes.FieldExecutiveDashboard,
+      arguments: fieldexecutivedashboardArguments(roleId: roleId, roleName: roleName),
     );
 
+  // void _navigateToLogin(
+  //     BuildContext context, {
+  //       required int roleId,
+  //       required String roleName,
+  //     }) {
+  //   Navigator.pushNamed(
+  //     context,
+  //     AppRoutes.DeliveryDashboard,
+  //     arguments: deliverydasboardArguments(roleId: roleId, roleName: roleName),
+  //   );
+  //
 
 
 
@@ -215,3 +225,30 @@ class rolesccreen extends StatelessWidget {
 
   }
 }
+
+
+
+  // void _navigateToLogin(
+  //   BuildContext context, {
+  //     required int roleId,
+  //     required String roleName,
+  //   }) {
+  // Navigator.pushNamed(
+  //   context,
+  //   AppRoutes.DeliveryPersonHomeTab,
+  //   arguments: deliverydashboardArguments(roleId: roleId, roleName: roleName),
+  // );
+
+  //
+  // void _navigateToLogin(
+  //     BuildContext context, {
+  //       required int roleId,
+  //       required String roleName,
+  //     }) {
+  //   Navigator.pushNamed(
+  //     context,
+  //     AppRoutes.login,
+  //     arguments: LoginArguments(roleId: roleId, roleName: roleName),
+  //   );
+  // }
+

@@ -6,17 +6,7 @@ import 'package:final_crackteck/routes/app_routes.dart';
 import 'package:final_crackteck/services/api_service.dart';
 import 'package:final_crackteck/widgets/custom_button.dart';
 
-class OtpArguments {
-  final int roleId;
-  final String roleName;
-  final String phoneNumber;
-
-  OtpArguments({
-    required this.roleId,
-    required this.roleName,
-    required this.phoneNumber,
-  });
-}
+import 'constants/app_strings.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final OtpArguments args;
@@ -67,8 +57,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   Future<void> verifyOtp() async {
     final otp = _otpController.text.trim();
 
-    if (otp.length != 4) {
-      _showSnack("Please enter a valid 4-digit OTP");
+    if (otp.length < 4) {
+      _showSnack("Please enter a valid OTP");
       return;
     }
 
@@ -84,7 +74,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       if (!mounted) return;
 
       if (res.success) {
-        _navigateByRole(widget.args.roleId);
+        _navigateByRole(widget.args.roleId, widget.args.roleName);
       } else {
         _showSnack(res.message ?? "Invalid OTP");
       }
@@ -97,34 +87,30 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     }
   }
 
-  void _navigateByRole(int roleId) {
-    switch (roleId) {
-      case 1:
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.adminDashboard,
-              (route) => false,
-        );
-        break;
-
-      case 2:
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.residentDashboard,
-              (route) => false,
-        );
-        break;
-
-      case 3:
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.securityDashboard,
-              (route) => false,
-        );
-        break;
-
-      default:
-        _showSnack("Unknown role");
+  void _navigateByRole(int roleId, String roleName) {
+    if (roleName == AppStrings.fieldExecutive) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.FieldExecutiveDashboard,
+            (route) => false,
+        arguments: fieldexecutivedashboardArguments(roleId: roleId, roleName: roleName),
+      );
+    } else if (roleName == AppStrings.deliveryMan) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.DeliveryDashboard,
+            (route) => false,
+        arguments: deliverydasboardArguments(roleId: roleId, roleName: roleName),
+      );
+    } else if (roleName == AppStrings.salesPerson) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.SalespersonDashboard,
+            (route) => false,
+        arguments: SalespersonArguments(roleId: roleId, roleName: roleName),
+      );
+    } else {
+      _showSnack("Unknown role: $roleName");
     }
   }
 
@@ -221,22 +207,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             // OTP Boxes
             GestureDetector(
               onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                _openOtpKeyboard();
+                // FocusScope.of(context).requestFocus(FocusNode());
+                // _openOtpKeyboard();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, _otpBox),
+                children: List.generate(4, _otpBox),
               ),
             ),
 
-            Opacity(
-              opacity: 0,
-              child: TextField(
-                controller: _otpController,
-                maxLength: 6,
-                keyboardType: TextInputType.number,
-                onChanged: (_) => setState(() {}),
+            const SizedBox(height: 10),
+            
+            TextField(
+              controller: _otpController,
+              maxLength: 4,
+              keyboardType: TextInputType.number,
+              onChanged: (_) => setState(() {}),
+              decoration: const InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
               ),
             ),
 
@@ -276,9 +265,5 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ),
       ),
     );
-  }
-
-  void _openOtpKeyboard() {
-    FocusScope.of(context).requestFocus(FocusNode());
   }
 }

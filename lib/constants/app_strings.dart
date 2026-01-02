@@ -46,6 +46,41 @@ class AppStrings {
   static const String registerButton = 'Register';
   static const String alreadyHaveAccount = 'Already have an account? ';
   static const String login = 'Login';
+
+  // Product Details Screen
+  static const String productTitle = 'Product';
+  static const String systemSpecs = 'System Specs';
+  static const String processor = 'Processor';
+  static const String os = 'Operating System';
+  static const String graphicCard = 'Graphic Card';
+  static const String memory = 'Memory';
+  static const String storage = 'Storage';
+  static const String display = 'Display';
+  static const String camera = 'Camera';
+  static const String audio = 'Audio';
+  static const String pointingDevice = 'Pointing Device';
+  static const String keyboard = 'Keyboard';
+  static const String wifi = 'WIFI';
+  static const String warranty = 'Warranty';
+  static const String color = 'Color';
+  static const String brand = 'Brand';
+  static const String screenResolution = 'Screen Resolution';
+  static const String softwarePreload = 'Software Preload';
+  static const String services = 'Services';
+  static const String inclTaxes = 'Incl. Shipping & all Taxes';
+  static const String addButton = 'Add';
+
+  // Product Payment Screen
+  static const String productPaymentTitle = 'Product payment';
+  static const String offers = 'Offers';
+  static const String enterOfferCode = 'Enter Offer Code';
+  static const String online = 'Online';
+  static const String googlePay = 'Google Pay';
+  static const String phonePe = 'PhonePe';
+  static const String addNewUpiId = 'Add New UPI ID';
+  static const String cash = 'Cash';
+  static const String amount = 'Amount';
+  static const String done = 'Done';
 }
 
 /// Helper function to generate dynamic subtitle
