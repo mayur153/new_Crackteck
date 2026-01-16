@@ -64,6 +64,8 @@
     static const String FieldExecutiveProductListToAddMoreScreen = '/field_executive_product_list';
     static const String FieldExecutiveRequestedProductDetailScreen = '/field_executive_requested_product_detail';
     static const String FieldExecutiveProductPaymentScreen = '/field_executive_product_payment';
+    static const String FieldExecutiveCashInHandScreen = '/field_executive_cash_in_hand';
+    static const String FieldExecutivePaymentReceiptsScreen = '/field_executive_payment_receipts';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -351,4 +353,18 @@
     final String roleName;
 
     fieldexecutiveproductpaymentArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutivecashinhandArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivecashinhandArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutivepaymentreceiptsArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivepaymentreceiptsArguments({required this.roleId, required this.roleName});
   }

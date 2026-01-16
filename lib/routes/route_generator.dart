@@ -18,6 +18,8 @@ import '../screens/Field_executive/field_executive_stock_in_hand.dart';
 import '../screens/Field_executive/field_executive_product_list_to_add_more.dart' as product_list;
 import '../screens/Field_executive/field_executive_detail_requested_product.dart' as detail_requested;
 import '../screens/Field_executive/field_executive_product_payment.dart';
+import '../screens/Field_executive/field_executive_cash_in_hand.dart';
+import '../screens/Field_executive/field_executive_payment_receipts.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_edit_lead_screen.dart';
@@ -576,6 +578,34 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               FieldExecutiveProductPaymentScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveCashInHandScreen:
+        final args = settings.arguments as fieldexecutivecashinhandArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveCashInHandScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutivePaymentReceiptsScreen:
+        final args = settings.arguments as fieldexecutivepaymentreceiptsArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutivePaymentReceiptsScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
               ),

@@ -205,11 +205,23 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                     ),
                     SizedBox(width: isSmall ? 6 : 10),
                     Expanded(
-                      child: _StatCard(
-                        title: 'Cash\nin hand',
-                        icon: Icons.payments,
-                        iconColor: Colors.green,
-                        isSmall: isSmall,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.FieldExecutiveCashInHandScreen,
+                            arguments: fieldexecutivecashinhandArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        },
+                        child: _StatCard(
+                          title: 'Cash\nin hand',
+                          icon: Icons.payments,
+                          iconColor: Colors.green,
+                          isSmall: isSmall,
+                        ),
                       ),
                     ),
                   ],
