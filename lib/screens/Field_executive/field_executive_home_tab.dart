@@ -196,11 +196,23 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                     ),
                     SizedBox(width: isSmall ? 6 : 10),
                     Expanded(
-                      child: _StatCard(
-                        title: 'Work\ncall',
-                        icon: Icons.home_repair_service,
-                        iconColor: Colors.blue,
-                        isSmall: isSmall,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.FieldExecutiveWorkCallScreen,
+                            arguments: fieldexecutiveworkcallArguments(
+                              roleId: widget.roleId,
+                              roleName: widget.roleName,
+                            ),
+                          );
+                        },
+                        child: _StatCard(
+                          title: 'Work\ncall',
+                          icon: Icons.home_repair_service,
+                          iconColor: Colors.blue,
+                          isSmall: isSmall,
+                        ),
                       ),
                     ),
                     SizedBox(width: isSmall ? 6 : 10),

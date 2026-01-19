@@ -10,16 +10,35 @@ import '../screens/Delivery_person/map_with-start.dart';
 import '../screens/Delivery_person/product_to_be_deliveried_screen.dart';
 import '../screens/Delivery_person/delivery_otp_screen.dart';
 import '../screens/Delivery_person/delivery_otp_verification_screen.dart';
+import '../screens/Delivery_person/delivery_profile_tab.dart';
+import '../screens/Delivery_person/delivery_person_documents.dart';
+import '../screens/Delivery_person/delivery_edit_adhar_card.dart';
+import '../screens/Delivery_person/delivery_edit_pan_card.dart';
+import '../screens/Delivery_person/delivery_edit_License_card.dart';
+import '../screens/Delivery_person/delivery_vehilcle_details.dart';
+import '../screens/Delivery_person/delivery_person_attendance.dart';
+import '../screens/Delivery_person/delivery_feedback.dart';
+import '../screens/Delivery_person/delivery_track_order.dart';
+
 import '../screens/Field_executive/field_executive_add_product.dart';
+import '../screens/Field_executive/field_executive_all_products_screen.dart';
 import '../screens/Field_executive/field_executive_dashboard.dart';
+import '../screens/Field_executive/field_executive_installation_detail_screen.dart';
+import '../screens/Field_executive/field_executive_map_tracking_screen.dart';
 import '../screens/Field_executive/field_executive_notification.dart';
+import '../screens/Field_executive/field_executive_otp_verification_screen.dart';
 import '../screens/Field_executive/field_executive_product_detail.dart' as product_detail;
+import '../screens/Field_executive/field_executive_product_item_detail_screen.dart';
 import '../screens/Field_executive/field_executive_stock_in_hand.dart';
 import '../screens/Field_executive/field_executive_product_list_to_add_more.dart' as product_list;
 import '../screens/Field_executive/field_executive_detail_requested_product.dart' as detail_requested;
 import '../screens/Field_executive/field_executive_product_payment.dart';
 import '../screens/Field_executive/field_executive_cash_in_hand.dart';
 import '../screens/Field_executive/field_executive_payment_receipts.dart';
+import '../screens/Field_executive/field_executive_payment_done.dart';
+import '../screens/Field_executive/field_executive_upload_before_images_screen.dart';
+import '../screens/Field_executive/field_executive_work_call.dart';
+import '../screens/Field_executive/field_executive_write_report_screen.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_edit_lead_screen.dart';
@@ -470,6 +489,108 @@ class RouteGenerator {
           settings: settings,
         );
 
+      case AppRoutes.DeliveryProfileScreen:
+        final args = settings.arguments as deliveryprofileArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryProfileScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryDocumentsScreen:
+        final args = settings.arguments as deliverydocumentsArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const DocumentsScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryAadhaarEditScreen:
+        final args = settings.arguments as deliveryaadhaareditArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const AadhaarEditScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryPancardEditScreen:
+        final args = settings.arguments as deliverypancardeditArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const PancardEditScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryLicenseEditScreen:
+        final args = settings.arguments as deliverylicenseeditArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const LicenseEditScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryVehicleDetailsScreen:
+        final args = settings.arguments as deliveryvehicledetailsArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const VehicleDetailsScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryAttendanceScreen:
+        final args = settings.arguments as deliveryattendanceArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              DeliveryPersonAttendanceScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryFeedbackScreen:
+        final args = settings.arguments as deliveryfeedbackArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => const FeedbackScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.DeliveryTrackOrderScreen:
+        final args = settings.arguments as deliverytrackorderArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              TotalDeliveryScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
         // Field Executive cases
       case AppRoutes.FieldExecutiveDashboard:
         final args = settings.arguments as fieldexecutivedashboardArguments?;
@@ -606,6 +727,142 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               FieldExecutivePaymentReceiptsScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutivePaymentDoneScreen:
+        final args = settings.arguments as fieldexecutivepaymentdoneArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutivePaymentDoneScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveWorkCallScreen:
+        final args = settings.arguments as fieldexecutiveworkcallArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveWorkCallScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+
+      case AppRoutes.FieldExecutiveOtpVerificationScreen:
+        final args = settings.arguments as fieldexecutiveotpverificationArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveOtpVerificationScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveAllProductsScreen:
+        final args = settings.arguments as fieldexecutiveallproductsArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveAllProductsScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveProductItemDetailScreen:
+        final args = settings.arguments as fieldexecutiveproductitemdetailArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveProductItemDetailScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                title: args.title,
+                serviceId: args.serviceId,
+                location: args.location,
+                priority: args.priority,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveMapTrackingScreen:
+        final args = settings.arguments as fieldexecutivemaptrackingArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveMapTrackingScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                serviceId: args.serviceId,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveUploadBeforeImagesScreen:
+        final args = settings.arguments as fieldexecutiveuploadbeforeimagesArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveUploadBeforeImagesScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveInstallationDetailScreen:
+        final args = settings.arguments as fieldexecutiveinstallationdetailArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveInstallationDetailScreen(
+                roleId: args.roleId,
+                roleName: args.roleName,
+                title: args.title,
+                serviceId: args.serviceId,
+                location: args.location,
+                priority: args.priority,
+              ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveWriteReportScreen:
+        final args = settings.arguments as fieldexecutivewritereportArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) =>
+              FieldExecutiveWriteReportScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
               ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../routes/app_routes.dart';
 
 class FieldExecutivePaymentReceiptsScreen extends StatefulWidget {
   final int roleId;
@@ -220,7 +221,16 @@ class _FieldExecutivePaymentReceiptsScreenState
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.FieldExecutivePaymentDoneScreen,
+                    arguments: fieldexecutivepaymentdoneArguments(
+                      roleId: widget.roleId,
+                      roleName: widget.roleName,
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryGreen,
                   shape: RoundedRectangleBorder(

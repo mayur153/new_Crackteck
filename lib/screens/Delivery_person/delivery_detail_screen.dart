@@ -51,73 +51,75 @@ class DeliveryDetailsScreen extends StatelessWidget {
         ],
       ),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 🔹 Details Card
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🔹 Details Card
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Column(
+                  children: [
+                    _DetailRow(label: "Name", value: "Denil rao"),
+                    _DetailRow(label: "Number", value: "+91 **** ****"),
+                    _DetailRow(label: "Email", value: "cracktech@mail.com"),
+                    _DetailRow(label: "From", value: "Vasai Warehouse"),
+                    _DetailRow(
+                      label: "To",
+                      value:
+                      "Office No 501, 5th Floor,\n"
+                          "Ghanshyam Enclave, New Link Rd,\n"
+                          "Kandivali, Kandivali West,\n"
+                          "Mumbai, Maharashtra 400067",
+                      multiline: true,
+                    ),
+                  ],
+                ),
               ),
-              child: const Column(
-                children: [
-                  _DetailRow(label: "Name", value: "Denil rao"),
-                  _DetailRow(label: "Number", value: "+91 **** ****"),
-                  _DetailRow(label: "Email", value: "cracktech@mail.com"),
-                  _DetailRow(label: "From", value: "Vasai Warehouse"),
-                  _DetailRow(
-                    label: "To",
-                    value:
-                    "Office No 501, 5th Floor,\n"
-                        "Ghanshyam Enclave, New Link Rd,\n"
-                        "Kandivali, Kandivali West,\n"
-                        "Mumbai, Maharashtra 400067",
-                    multiline: true,
-                  ),
-                ],
+        
+              const SizedBox(height: 20),
+        
+              const Text(
+                "Delivered Products",
+                style: TextStyle(
+                  color: darkGreen,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            const Text(
-              "Delivered Products",
-              style: TextStyle(
-                color: darkGreen,
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
+        
+              const SizedBox(height: 12),
+        
+              const _ProductTile(
+                title:
+                "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
               ),
-            ),
-
-            const SizedBox(height: 12),
-
-            const _ProductTile(
-              title:
-              "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
-            ),
-            const _ProductTile(
-              title: "Intel Core i3 12100F 12th Gen Desktop PC Processor",
-            ),
-            const _ProductTile(
-              title:
-              "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
-            ),
-            const _ProductTile(
-              title:
-              "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
-            ),
-          ],
+              const _ProductTile(
+                title: "Intel Core i3 12100F 12th Gen Desktop PC Processor",
+              ),
+              const _ProductTile(
+                title:
+                "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
+              ),
+              const _ProductTile(
+                title:
+                "AURA EDITION Yoga Slim 7 Intel, 35.56cms - Core Ultra 5 (Luna Grey)",
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -83,115 +83,117 @@ class _DeliveryOtpVerificationScreenState extends State<DeliveryOtpVerificationS
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            const Text(
-              "Please provide the OTP to proceed with the delivery.",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                height: 1.2,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              "We've sent your verification code to\n+91 **** ** ****",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 60),
-            const Text(
-              "Enter code",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-            TextField(
-              controller: _otpController,
-              keyboardType: TextInputType.number,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-              decoration: const InputDecoration(
-                hintText: "8888",
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black12),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: green),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              const Text(
+                "Please provide the OTP to proceed with the delivery.",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: _secondsRemaining == 0 ? () {
-                  setState(() {
-                    _secondsRemaining = 80;
-                    _startTimer();
-                  });
-                } : null,
-                child: Text(
-                  "Resend code",
-                  style: TextStyle(
-                    color: _secondsRemaining == 0 ? green : Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.DeliveryDoneScreen,
-                    arguments: deliverydoneArguments(
-                      roleId: widget.roleId,
-                      roleName: widget.roleName,
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  "Verify",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Center(
-              child: Text(
-                "${_formatTime(_secondsRemaining)} left",
-                style: const TextStyle(
-                  color: Colors.grey,
+              const SizedBox(height: 16),
+              const Text(
+                "We've sent your verification code to\n+91 **** ** ****",
+                style: TextStyle(
                   fontSize: 14,
+                  color: Colors.grey,
+                  height: 1.5,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 60),
+              const Text(
+                "Enter code",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              TextField(
+                controller: _otpController,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "8888",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black12),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: green),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _secondsRemaining == 0 ? () {
+                    setState(() {
+                      _secondsRemaining = 80;
+                      _startTimer();
+                    });
+                  } : null,
+                  child: Text(
+                    "Resend code",
+                    style: TextStyle(
+                      color: _secondsRemaining == 0 ? green : Colors.grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.DeliveryDoneScreen,
+                      arguments: deliverydoneArguments(
+                        roleId: widget.roleId,
+                        roleName: widget.roleName,
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    "Verify",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: Text(
+                  "${_formatTime(_secondsRemaining)} left",
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

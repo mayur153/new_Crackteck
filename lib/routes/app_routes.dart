@@ -54,6 +54,15 @@
     static const String DeliveryDetailScreen = '/delivery_detail';
     static const String DeliveryPrivacyPolicyScreen = '/delivery_privacy_policy';
     static const String DeliveryTermsConditionScreen = '/delivery_terms_condition';
+    static const String DeliveryProfileScreen = '/delivery_profile';
+    static const String DeliveryDocumentsScreen = '/delivery_documents';
+    static const String DeliveryAadhaarEditScreen = '/delivery_aadhaar_edit';
+    static const String DeliveryPancardEditScreen = '/delivery_pancard_edit';
+    static const String DeliveryLicenseEditScreen = '/delivery_license_edit';
+    static const String DeliveryVehicleDetailsScreen = '/delivery_vehicle_details';
+    static const String DeliveryAttendanceScreen = '/delivery_attendance';
+    static const String DeliveryFeedbackScreen = '/delivery_feedback';
+    static const String DeliveryTrackOrderScreen = '/delivery_track_order';
 
     // field executive screens
     static const String FieldExecutiveDashboard = '/field_executive_dashboard';
@@ -66,6 +75,16 @@
     static const String FieldExecutiveProductPaymentScreen = '/field_executive_product_payment';
     static const String FieldExecutiveCashInHandScreen = '/field_executive_cash_in_hand';
     static const String FieldExecutivePaymentReceiptsScreen = '/field_executive_payment_receipts';
+    static const String FieldExecutivePaymentDoneScreen = '/field_executive_payment_done';
+    static const String FieldExecutiveWorkCallScreen = '/field_executive_work_call';
+    static const String FieldExecutiveInstallationDetailScreen = '/field_executive_installation_detail';
+    static const String FieldExecutiveOtpVerificationScreen = '/field_executive_otp_verification';
+    static const String FieldExecutiveAllProductsScreen = '/field_executive_all_products';
+    static const String FieldExecutiveProductItemDetailScreen = '/field_executive_product_item_detail';
+    static const String FieldExecutiveMapTrackingScreen = '/field_executive_map_tracking';
+    static const String FieldExecutiveUploadBeforeImagesScreen = '/field_executive_upload_before_images';
+    static const String FieldExecutiveWriteReportScreen = '/field_executive_write_report';
+    static const String FieldExecutiveCaseTransferScreen = '/field_executive_case_transfer';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -253,8 +272,7 @@
   }
   class deliverypickupparcelArguments {
     final int roleId;
-    final String roleName;
-    final String orderId;
+    final String roleName;    final String orderId;
 
     deliverypickupparcelArguments({required this.roleId, required this.roleName, required this.orderId});
   }
@@ -301,6 +319,69 @@
     final String roleName;
 
     deliverytermsArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliveryprofileArguments {
+    final int roleId;
+    final String roleName;
+
+    deliveryprofileArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliverydocumentsArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverydocumentsArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliveryaadhaareditArguments {
+    final int roleId;
+    final String roleName;
+
+    deliveryaadhaareditArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliverypancardeditArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverypancardeditArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliverylicenseeditArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverylicenseeditArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliveryvehicledetailsArguments {
+    final int roleId;
+    final String roleName;
+
+    deliveryvehicledetailsArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliveryattendanceArguments {
+    final int roleId;
+    final String roleName;
+
+    deliveryattendanceArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliveryfeedbackArguments {
+    final int roleId;
+    final String roleName;
+
+    deliveryfeedbackArguments({required this.roleId, required this.roleName});
+  }
+
+  class deliverytrackorderArguments {
+    final int roleId;
+    final String roleName;
+
+    deliverytrackorderArguments({required this.roleId, required this.roleName});
   }
 
   class fieldexecutivedashboardArguments {
@@ -367,4 +448,100 @@
     final String roleName;
 
     fieldexecutivepaymentreceiptsArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutivepaymentdoneArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivepaymentdoneArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutiveworkcallArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveworkcallArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutiveinstallationdetailArguments {
+    final int roleId;
+    final String roleName;
+    final String title;
+    final String serviceId;
+    final String location;
+    final String priority;
+
+    fieldexecutiveinstallationdetailArguments({
+      required this.roleId,
+      required this.roleName,
+      required this.title,
+      required this.serviceId,
+      required this.location,
+      required this.priority,
+    });
+  }
+
+  class fieldexecutiveotpverificationArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveotpverificationArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutiveallproductsArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveallproductsArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutiveproductitemdetailArguments {
+    final int roleId;
+    final String roleName;
+    final String title;
+    final String serviceId;
+    final String location;
+    final String priority;
+
+    fieldexecutiveproductitemdetailArguments({
+      required this.roleId,
+      required this.roleName,
+      required this.title,
+      required this.serviceId,
+      required this.location,
+      required this.priority,
+    });
+  }
+
+  class fieldexecutivemaptrackingArguments {
+    final int roleId;
+    final String roleName;    final String serviceId;
+
+    fieldexecutivemaptrackingArguments({
+      required this.roleId,
+      required this.roleName,
+      required this.serviceId,
+    });
+  }
+
+  class fieldexecutiveuploadbeforeimagesArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveuploadbeforeimagesArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutivewritereportArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivewritereportArguments({required this.roleId, required this.roleName});
+  }
+
+  class fieldexecutivecasetransferArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivecasetransferArguments({required this.roleId, required this.roleName});
   }
