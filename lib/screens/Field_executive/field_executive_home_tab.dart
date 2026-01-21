@@ -294,9 +294,28 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                 itemCount: visibleJobs.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  return _JobCard(
-                    job: visibleJobs[index],
-                    isSmall: isSmall,
+                  final job = visibleJobs[index];
+                  return InkWell(
+                    onTap: job.tab == JobTab.installations
+                        ? () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.FieldExecutiveInstallationDetailScreen,
+                              arguments: fieldexecutiveinstallationdetailArguments(
+                                roleId: widget.roleId,
+                                roleName: widget.roleName,
+                                title: job.title,
+                                serviceId: job.serviceId,
+                                location: job.location,
+                                priority: job.priority,
+                              ),
+                            );
+                          }
+                        : null,
+                    child: _JobCard(
+                      job: job,
+                      isSmall: isSmall,
+                    ),
                   );
                 },
               ),
