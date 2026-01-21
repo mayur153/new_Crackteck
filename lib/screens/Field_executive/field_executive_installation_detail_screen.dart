@@ -8,6 +8,7 @@ class FieldExecutiveInstallationDetailScreen extends StatefulWidget {
   final String serviceId;
   final String location;
   final String priority;
+  final String jobType; // 'installations' | 'repairs' | 'amc'
 
   const FieldExecutiveInstallationDetailScreen({
     super.key,
@@ -17,6 +18,7 @@ class FieldExecutiveInstallationDetailScreen extends StatefulWidget {
     required this.serviceId,
     required this.location,
     required this.priority,
+    this.jobType = 'installations',
   });
 
   @override
@@ -67,6 +69,72 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
     return months[month - 1];
   }
 
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(value, textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductCard(String title, String desc, String serviceId, String location, String priority) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(8)),
+            child: const Icon(Icons.desktop_windows, color: Colors.grey),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(desc, style: const TextStyle(fontSize: 12, color: Colors.black54), maxLines: 2, overflow: TextOverflow.ellipsis),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(serviceId, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+              Text(location, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageThumb(String url) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(url, width: 100, height: 100, fit: BoxFit.cover),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,9 +146,13 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Installation service detail\'s',
-          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+        title: Text(
+          widget.jobType == 'repairs'
+              ? 'Repair service details'
+              : widget.jobType == 'amc'
+                  ? 'AMC service details'
+                  : 'Installation service details',
+          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
       body: SafeArea(
@@ -114,9 +186,11 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Visit charge of Rs 159 waived in final bill; spare part / repair cost extra',
-                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                Text(
+                  widget.jobType == 'repairs'
+                      ? 'Visit charge of Rs 159 waived in final bill; spare part / repair cost extra. Technician will diagnose and provide repair estimate.'
+                      : 'Visit charge of Rs 159 waived in final bill; spare part / repair cost extra',
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
                 ),
                 const SizedBox(height: 16),
                 const Divider(),
@@ -213,7 +287,7 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
                 ),
                 const SizedBox(height: 16),
 
-                // Go to location button
+                // Go to location button (same for all job types)
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -271,6 +345,7 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
               )
             ],
           ),
+          // same accept / reschedule / case-transfer actions for all job types
           child: isAccepted
               ? Row(
                   mainAxisSize: MainAxisSize.min,
@@ -336,70 +411,8 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
                     style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 14, color: Colors.black54)),
-          Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProductCard(String title, String desc, String id, String loc, String priority) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.inventory_2_outlined, color: primaryGreen),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                Text(desc, style: const TextStyle(fontSize: 11, color: Colors.black54), maxLines: 1, overflow: TextOverflow.ellipsis),
-              ],
-            ),
-          ),
-          const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImageThumb(String url) {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      width: 100,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(url, fit: BoxFit.cover),
-      ),
-    );
+                ),
+              ),
+            );
   }
 }

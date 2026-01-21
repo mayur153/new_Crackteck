@@ -471,6 +471,7 @@
     final String serviceId;
     final String location;
     final String priority;
+    final String jobType; // 'installations' | 'repairs' | 'amc'
 
     fieldexecutiveinstallationdetailArguments({
       required this.roleId,
@@ -479,6 +480,7 @@
       required this.serviceId,
       required this.location,
       required this.priority,
+      required this.jobType,
     });
   }
 

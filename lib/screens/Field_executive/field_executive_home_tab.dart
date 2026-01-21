@@ -295,23 +295,29 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final job = visibleJobs[index];
+                  // Make all job types navigable; pass jobType so detail screen can render accordingly
+                  String jobTypeStr = job.tab == JobTab.installations
+                      ? 'installations'
+                      : job.tab == JobTab.repairs
+                          ? 'repairs'
+                          : 'amc';
+
                   return InkWell(
-                    onTap: job.tab == JobTab.installations
-                        ? () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.FieldExecutiveInstallationDetailScreen,
-                              arguments: fieldexecutiveinstallationdetailArguments(
-                                roleId: widget.roleId,
-                                roleName: widget.roleName,
-                                title: job.title,
-                                serviceId: job.serviceId,
-                                location: job.location,
-                                priority: job.priority,
-                              ),
-                            );
-                          }
-                        : null,
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.FieldExecutiveInstallationDetailScreen,
+                        arguments: fieldexecutiveinstallationdetailArguments(
+                          roleId: widget.roleId,
+                          roleName: widget.roleName,
+                          title: job.title,
+                          serviceId: job.serviceId,
+                          location: job.location,
+                          priority: job.priority,
+                          jobType: jobTypeStr,
+                        ),
+                      );
+                    },
                     child: _JobCard(
                       job: job,
                       isSmall: isSmall,

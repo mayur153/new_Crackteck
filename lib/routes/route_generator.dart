@@ -39,6 +39,7 @@ import '../screens/Field_executive/field_executive_payment_done.dart';
 import '../screens/Field_executive/field_executive_upload_before_images_screen.dart';
 import '../screens/Field_executive/field_executive_work_call.dart';
 import '../screens/Field_executive/field_executive_write_report_screen.dart';
+import '../screens/Field_executive/field_executive_case_transfer_screen.dart';
 import '../screens/sales_person/Sales_new_follow-up_screen.dart';
 import '../screens/sales_person/Task.dart';
 import '../screens/sales_person/sale_person_edit_lead_screen.dart';
@@ -851,6 +852,8 @@ class RouteGenerator {
                 serviceId: args.serviceId,
                 location: args.location,
                 priority: args.priority,
+                // new: pass jobType so the screen can render differently for repairs
+                jobType: args.jobType,
               ),
           settings: settings,
         );
@@ -866,6 +869,19 @@ class RouteGenerator {
                 roleId: args.roleId,
                 roleName: args.roleName,
               ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutiveCaseTransferScreen:
+        final args = settings.arguments as fieldexecutivecasetransferArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => FieldExecutiveCaseTransferScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
           settings: settings,
         );
 

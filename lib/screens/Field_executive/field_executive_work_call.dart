@@ -165,20 +165,22 @@ class _JobCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (activeTabIndex == 0) {
-          Navigator.pushNamed(
-            context,
-            AppRoutes.FieldExecutiveInstallationDetailScreen,
-            arguments: fieldexecutiveinstallationdetailArguments(
-              roleId: roleId,
-              roleName: roleName,
-              title: job.title,
-              serviceId: job.serviceId,
-              location: job.location,
-              priority: job.priority,
-            ),
-          );
-        }
+        // Determine job type string based on activeTabIndex
+        final jobType = activeTabIndex == 0 ? 'installations' : activeTabIndex == 1 ? 'repairs' : 'amc';
+
+        Navigator.pushNamed(
+          context,
+          AppRoutes.FieldExecutiveInstallationDetailScreen,
+          arguments: fieldexecutiveinstallationdetailArguments(
+            roleId: roleId,
+            roleName: roleName,
+            title: job.title,
+            serviceId: job.serviceId,
+            location: job.location,
+            priority: job.priority,
+            jobType: jobType,
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
