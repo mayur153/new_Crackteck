@@ -85,6 +85,10 @@
     static const String FieldExecutiveUploadBeforeImagesScreen = '/field_executive_upload_before_images';
     static const String FieldExecutiveWriteReportScreen = '/field_executive_write_report';
     static const String FieldExecutiveCaseTransferScreen = '/field_executive_case_transfer';
+    static const String FieldExecutivePersonalInfo = '/field_executive_personal_info';
+    static const String field_executive_attendance = '/field_executive_attendance';
+    static const String PickupMaterialsScreen = '/field_executive_pickup_material';
+    static const String RepairRequestScreen = '/field_executive_repair_request';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -546,4 +550,36 @@
     final String roleName;
 
     fieldexecutivecasetransferArguments({required this.roleId, required this.roleName});
+  }
+
+
+  class fieldexecutivePersonalInfoArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivePersonalInfoArguments({required this.roleId, required this.roleName});
+  }
+
+
+  class fieldexecutiveattendanceArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveattendanceArguments({required this.roleId, required this.roleName});
+  }
+
+
+  class fieldexecutivePickupMaterialArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivePickupMaterialArguments({required this.roleId, required this.roleName});
+  }
+
+
+  class fieldexecutiveRepairRequestArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveRepairRequestArguments({required this.roleId, required this.roleName});
   }

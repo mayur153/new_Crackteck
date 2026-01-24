@@ -20,6 +20,7 @@ import '../screens/Delivery_person/delivery_person_attendance.dart';
 import '../screens/Delivery_person/delivery_feedback.dart';
 import '../screens/Delivery_person/delivery_track_order.dart';
 
+import '../screens/Field_executive/field_excutive_attendance.dart';
 import '../screens/Field_executive/field_executive_add_product.dart';
 import '../screens/Field_executive/field_executive_all_products_screen.dart';
 import '../screens/Field_executive/field_executive_dashboard.dart';
@@ -27,8 +28,11 @@ import '../screens/Field_executive/field_executive_installation_detail_screen.da
 import '../screens/Field_executive/field_executive_map_tracking_screen.dart';
 import '../screens/Field_executive/field_executive_notification.dart';
 import '../screens/Field_executive/field_executive_otp_verification_screen.dart';
+import '../screens/Field_executive/field_executive_personal_info.dart';
+import '../screens/Field_executive/field_executive_pickup_product.dart';
 import '../screens/Field_executive/field_executive_product_detail.dart' as product_detail;
 import '../screens/Field_executive/field_executive_product_item_detail_screen.dart';
+import '../screens/Field_executive/field_executive_repair_request_part.dart';
 import '../screens/Field_executive/field_executive_stock_in_hand.dart';
 import '../screens/Field_executive/field_executive_product_list_to_add_more.dart' as product_list;
 import '../screens/Field_executive/field_executive_detail_requested_product.dart' as detail_requested;
@@ -63,9 +67,9 @@ import '../screens/sales_person/salesperson_dashboard.dart';
 import '../login_screen.dart';
 import '../role_screen.dart';
 import '../screens/sales_person/salesperson_leads_screen.dart';
-import '../screens/sales_person/salesperson_profile_tab.dart';
 import '../widgets/placeholder.dart';
 import 'app_routes.dart' hide DashboardScreen;
+import '../screens/Field_executive/field_executive_profile_screen.dart';
 
 
 /// Centralized route generator for the application
@@ -186,7 +190,8 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) =>
-              SalesPersonMoreScreen(roleId: args.roleId, roleName: args.roleName),
+              // route SalesPersonMoreScreen now opens the combined profile screen requested
+              CombinedProfileScreen(roleId: args.roleId, roleName: args.roleName),
           settings: settings,
         );
 
@@ -879,6 +884,58 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) => FieldExecutiveCaseTransferScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.FieldExecutivePersonalInfo:
+        final args = settings.arguments as fieldexecutivePersonalInfoArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => FieldExecutivePersonalInfo(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.field_executive_attendance:
+        final args = settings.arguments as fieldexecutiveattendanceArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => field_executive_attendance(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.PickupMaterialsScreen:
+        final args = settings.arguments as fieldexecutivePickupMaterialArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => PickupMaterialsScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.RepairRequestScreen:
+        final args = settings.arguments as fieldexecutiveRepairRequestArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => RepairRequestScreen(
             roleId: args.roleId,
             roleName: args.roleName,
           ),

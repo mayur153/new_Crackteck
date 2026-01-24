@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/delivery_man_bottom_navigation.dart';
 import '../../widgets/placeholder.dart';
 import 'field_executive_home_tab.dart';
+import 'field_executive_profile_screen.dart';
 
 class FieldExecutiveDashboard extends StatefulWidget {
   final int roleId;
@@ -42,7 +43,7 @@ class _FieldExecutiveDashboardState extends State<FieldExecutiveDashboard> {
       ),
 
       /// 👤 PROFILE
-      ComingSoonScreen(
+      CombinedProfileScreen(
         roleId: widget.roleId,
         roleName: widget.roleName,
       ),
