@@ -28,6 +28,7 @@ import '../screens/Field_executive/field_executive_installation_detail_screen.da
 import '../screens/Field_executive/field_executive_map_tracking_screen.dart';
 import '../screens/Field_executive/field_executive_notification.dart';
 import '../screens/Field_executive/field_executive_otp_verification_screen.dart';
+import '../screens/Field_executive/field_executive_payment.dart';
 import '../screens/Field_executive/field_executive_personal_info.dart';
 import '../screens/Field_executive/field_executive_pickup_product.dart';
 import '../screens/Field_executive/field_executive_product_detail.dart' as product_detail;
@@ -41,6 +42,7 @@ import '../screens/Field_executive/field_executive_cash_in_hand.dart';
 import '../screens/Field_executive/field_executive_payment_receipts.dart';
 import '../screens/Field_executive/field_executive_payment_done.dart';
 import '../screens/Field_executive/field_executive_upload_before_images_screen.dart';
+import '../screens/Field_executive/field_executive_work.dart';
 import '../screens/Field_executive/field_executive_work_call.dart';
 import '../screens/Field_executive/field_executive_write_report_screen.dart';
 import '../screens/Field_executive/field_executive_case_transfer_screen.dart';
@@ -936,6 +938,33 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) => RepairRequestScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.PaymentsScreen:
+        final args = settings.arguments as fieldexecutivePaymentsScreenArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => PaymentsScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+
+      case AppRoutes.WorksScreen:
+        final args = settings.arguments as fieldexecutiveWorksScreenArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => WorksScreen(
             roleId: args.roleId,
             roleName: args.roleName,
           ),
