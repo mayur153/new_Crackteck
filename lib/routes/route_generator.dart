@@ -31,6 +31,7 @@ import '../screens/Field_executive/field_executive_otp_verification_screen.dart'
 import '../screens/Field_executive/field_executive_payment.dart';
 import '../screens/Field_executive/field_executive_personal_info.dart';
 import '../screens/Field_executive/field_executive_pickup_product.dart';
+import '../screens/Field_executive/field_executive_privacy_policy.dart';
 import '../screens/Field_executive/field_executive_product_detail.dart' as product_detail;
 import '../screens/Field_executive/field_executive_product_item_detail_screen.dart';
 import '../screens/Field_executive/field_executive_repair_request_part.dart';
@@ -965,6 +966,21 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) => WorksScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+
+
+      case AppRoutes.fieldexecutivePrivacyPolicyScreen:
+        final args = settings.arguments as fieldexecutivePrivacyPolicyScreenArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => fieldexecutivePrivacyPolicyScreen(
             roleId: args.roleId,
             roleName: args.roleName,
           ),

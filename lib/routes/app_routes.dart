@@ -91,6 +91,7 @@
     static const String RepairRequestScreen = '/field_executive_repair_request';
     static const String PaymentsScreen = '/field_executive_payments';
     static const String WorksScreen = '/field_executive_works';
+    static const String fieldexecutivePrivacyPolicyScreen = '/field_executive_privacy_policy';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -599,4 +600,12 @@
     final String roleName;
 
     fieldexecutiveWorksScreenArguments({required this.roleId, required this.roleName});
+  }
+
+
+  class fieldexecutivePrivacyPolicyScreenArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutivePrivacyPolicyScreenArguments({required this.roleId, required this.roleName});
   }

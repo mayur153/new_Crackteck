@@ -3,7 +3,9 @@ import 'field_excutive_attendance.dart';
 import 'field_executive_payment.dart';
 import 'field_executive_personal_info.dart';
 import 'field_executive_pickup_product.dart';
+import 'field_executive_privacy_policy.dart';
 import 'field_executive_repair_request_part.dart';
+import 'field_executive_stock_in_hand.dart';
 import 'field_executive_work.dart';
 
 class CombinedProfileScreen extends StatefulWidget {
@@ -172,9 +174,23 @@ class _CombinedProfileScreenState extends State<CombinedProfileScreen> {
                 );
               },),
               const SizedBox(height: 12),
-              _OptionTile(icon: Icons.warehouse, label: "Stock in Hand", onTap: () {}),
+              _OptionTile(icon: Icons.warehouse, label: "Stock in Hand", onTap: ()  {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StockInHandScreen ( roleId: 0, roleName: '', ),
+                  ),
+                );
+              },),
               const SizedBox(height: 12),
-              _OptionTile(icon: Icons.privacy_tip_outlined, label: "Privacy policy", onTap: () {}),
+              _OptionTile(icon: Icons.privacy_tip_outlined, label: "Privacy policy", onTap: ()  {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => fieldexecutivePrivacyPolicyScreen ( roleId: 0, roleName: '', ),
+                  ),
+                );
+              },),
               const SizedBox(height: 12),
               _OptionTile(icon: Icons.privacy_tip_outlined, label: "Feedbacks ", onTap: () {}),
               const SizedBox(height: 12),
