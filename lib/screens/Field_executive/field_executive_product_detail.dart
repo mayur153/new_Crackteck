@@ -37,11 +37,12 @@ class ProductDetailScreen extends StatelessWidget {
       ),
 
       // ✅ Body
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             // Product Image
             Center(
               child: Container(
@@ -181,39 +182,43 @@ class ProductDetailScreen extends StatelessWidget {
               AppStrings.services,
               '1YR Accidental Damage Protection',
             ),
-          ],
+            ],
+          ),
         ),
       ),
 
       // ✅ Bottom Button
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        color: Colors.white,
-        child: SizedBox(
-          height: 50,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryGreen,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.FieldExecutiveProductPaymentScreen,
-                arguments: fieldexecutiveproductpaymentArguments(
-                  roleId: roleId,
-                  roleName: roleName,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+          child: SizedBox(
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            child: const Text(
-              'Use in repair',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.FieldExecutiveProductPaymentScreen,
+                  arguments: fieldexecutiveproductpaymentArguments(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
+                );
+              },
+              child: const Text(
+                'Use in repair',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

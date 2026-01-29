@@ -85,8 +85,9 @@ class PaymentsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           /// Payment List
           Expanded(
             child: ListView.builder(
@@ -134,7 +135,8 @@ class PaymentsScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

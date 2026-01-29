@@ -19,12 +19,13 @@ class fieldexecutivePrivacyPolicyScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
               /// TITLE
               Text(
                 'Privacy Policy for SampleApp',
@@ -127,7 +128,8 @@ class fieldexecutivePrivacyPolicyScreen extends StatelessWidget {
                     'before publishing the app.',
                 style: TextStyle(fontSize: 13),
               ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

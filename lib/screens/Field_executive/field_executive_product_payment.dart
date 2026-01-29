@@ -52,10 +52,11 @@ class _FieldExecutiveProductPaymentScreenState
     if (isProcessing) {
       return Scaffold(
         backgroundColor: Colors.white,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
               SizedBox(
                 width: 120,
                 height: 120,
@@ -83,7 +84,8 @@ class _FieldExecutiveProductPaymentScreenState
                   color: Colors.black54,
                 ),
               ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -103,11 +105,12 @@ class _FieldExecutiveProductPaymentScreenState
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             // Product Summary Card
             Container(
               padding: const EdgeInsets.all(12),
@@ -244,7 +247,8 @@ class _FieldExecutiveProductPaymentScreenState
                 ),
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );

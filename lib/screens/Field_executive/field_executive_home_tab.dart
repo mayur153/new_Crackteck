@@ -56,6 +56,33 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
       tab: JobTab.amc,
       imageUrl: 'https://via.placeholder.com/80',
     ),
+    JobItem(
+      title: 'Quick Keyboard Fix',
+      description: 'Visit charge of Rs 159 waived in final bill; spare part/ repair cost extra',
+      serviceId: '#QSKB112233AA',
+      location: 'Borivali (West)',
+      priority: 'High',
+      tab: JobTab.quickService,
+      imageUrl: 'https://via.placeholder.com/80',
+    ),
+    JobItem(
+      title: 'Quick Wi-Fi Setup',
+      description: 'Visit charge of Rs 159 waived in final bill; spare part/ repair cost extra',
+      serviceId: '#QSWF445566BB',
+      location: 'Malad (East)',
+      priority: 'Medium',
+      tab: JobTab.quickService,
+      imageUrl: 'https://via.placeholder.com/80',
+    ),
+    JobItem(
+      title: 'Quick OS Tune-up',
+      description: 'Visit charge of Rs 159 waived in final bill; spare part/ repair cost extra',
+      serviceId: '#QSOS778899CC',
+      location: 'Kandivali (West)',
+      priority: 'Low',
+      tab: JobTab.quickService,
+      imageUrl: 'https://via.placeholder.com/80',
+    ),
   ];
 
   @override
@@ -281,6 +308,14 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                       isSmall: isSmall,
                       onTap: () => setState(() => _activeTab = JobTab.amc),
                     ),
+                    SizedBox(width: isSmall ? 6 : 12),
+                    _JobTabButton(
+                      label: isSmall ? 'Quick' : 'Quick Service',
+                      icon: Icons.bolt,
+                      isActive: _activeTab == JobTab.quickService,
+                      isSmall: isSmall,
+                      onTap: () => setState(() => _activeTab = JobTab.quickService),
+                    ),
                   ],
                 ),
               ),
@@ -300,7 +335,9 @@ class _FieldExecutiveHomeTabState extends State<FieldExecutiveHomeTab> {
                       ? 'installations'
                       : job.tab == JobTab.repairs
                           ? 'repairs'
-                          : 'amc';
+                          : job.tab == JobTab.amc
+                              ? 'amc'
+                              : 'quick_service';
 
                   return InkWell(
                     onTap: () {
@@ -567,7 +604,7 @@ class _JobCard extends StatelessWidget {
   }
 }
 
-enum JobTab { installations, repairs, amc }
+enum JobTab { installations, repairs, amc, quickService }
 
 class JobItem {
   final String title;

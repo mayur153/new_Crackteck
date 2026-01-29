@@ -29,8 +29,9 @@ class FieldExecutiveCashInHandScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           // Filter Row
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -148,7 +149,8 @@ class FieldExecutiveCashInHandScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

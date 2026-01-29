@@ -44,11 +44,12 @@ class _FieldExecutivePersonalInfoState extends State<FieldExecutivePersonalInfo>
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             _buildTextField(label: "", placeholder: "Select"),
             const SizedBox(height: 16),
             _buildTextField(label: "", placeholder: "Add More Field"),
@@ -82,7 +83,8 @@ class _FieldExecutivePersonalInfoState extends State<FieldExecutivePersonalInfo>
                 ),
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );

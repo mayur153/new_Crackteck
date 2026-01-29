@@ -28,35 +28,37 @@ class EnigneerNotificationScreen extends StatelessWidget {
         centerTitle: false,
       ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: const [
-          NotificationCard(
-            title: 'New Call',
-            description:
-            'How did we do? Let us know by rating your recent order and sharing your feedback.',
-            time: '15 minutes ago',
-            isUnread: true,
-          ),
-          NotificationCard(
-            title: 'Service Rating',
-            description:
-            'How did we do? Let us know by rating your recent order and sharing your feedback.',
-            time: '1 day ago',
-          ),
-          NotificationCard(
-            title: 'Hungry? Try Our New Pizza Specials!',
-            description:
-            'Check out the latest additions to our menu and satisfy your cravings!',
-            time: '2 days ago',
-          ),
-          NotificationCard(
-            title: "Don't Miss Out: Special Offer Just for You!",
-            description:
-            'Get 10% off your next order with code SAVE10. Limited time only!',
-            time: '2 hours ago',
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: const [
+            NotificationCard(
+              title: 'New Call',
+              description:
+              'How did we do? Let us know by rating your recent order and sharing your feedback.',
+              time: '15 minutes ago',
+              isUnread: true,
+            ),
+            NotificationCard(
+              title: 'Service Rating',
+              description:
+              'How did we do? Let us know by rating your recent order and sharing your feedback.',
+              time: '1 day ago',
+            ),
+            NotificationCard(
+              title: 'Hungry? Try Our New Pizza Specials!',
+              description:
+              'Check out the latest additions to our menu and satisfy your cravings!',
+              time: '2 days ago',
+            ),
+            NotificationCard(
+              title: "Don't Miss Out: Special Offer Just for You!",
+              description:
+              'Get 10% off your next order with code SAVE10. Limited time only!',
+              time: '2 hours ago',
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -44,8 +44,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
       ),
 
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           // 🧾 Product List
           Expanded(
             child: ListView.builder(
@@ -122,7 +123,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ],
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

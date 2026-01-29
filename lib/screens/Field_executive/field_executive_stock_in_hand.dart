@@ -36,12 +36,13 @@ class StockInHandScreen extends StatelessWidget {
       ),
 
       // ✅ Body
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-              children: [
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+                children: [
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(
@@ -120,41 +121,45 @@ class StockInHandScreen extends StatelessWidget {
                   },
                   child: const StockItemCard(image: 'assets/products/ram.png'),
                 ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
 
       // ✅ Bottom Button
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        color: Colors.white,
-        child: SizedBox(
-          height: 50,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryGreen,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.FieldExecutiveAddProductScreen,
-                arguments: fieldexecutiveaddproductArguments(
-                  roleId: roleId,
-                  roleName: roleName,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+          child: SizedBox(
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            child: const Text(
-              'Request more product',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.FieldExecutiveAddProductScreen,
+                  arguments: fieldexecutiveaddproductArguments(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
+                );
+              },
+              child: const Text(
+                'Request more product',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

@@ -32,8 +32,9 @@ class AddProductScreen extends StatelessWidget {
         ),
       ),
 
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           const SizedBox(height: 12),
 
           // 🔍 Search Bar
@@ -87,7 +88,8 @@ class AddProductScreen extends StatelessWidget {
               },
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

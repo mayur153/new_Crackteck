@@ -53,7 +53,9 @@ class _FieldExecutiveDashboardState extends State<FieldExecutiveDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: SafeArea(
+        child: _screens[_currentIndex],
+      ),
       bottomNavigationBar: DeliveryBottomNavigation(
         currentIndex: _currentIndex,
         onTap: (index) {

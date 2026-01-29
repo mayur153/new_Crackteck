@@ -29,9 +29,10 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
           _buildProductCard(
             context,
             'Desktop Installation',
@@ -67,7 +68,8 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
             'Kandivali (West)',
             'Low',
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

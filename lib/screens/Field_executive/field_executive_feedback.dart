@@ -16,18 +16,20 @@ class fieldexecutiveFeedbackScreen extends StatelessWidget {
         ),
         title: const Text("Feedback's"),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: feedbackList.length,
-        itemBuilder: (context, index) {
-          final item = feedbackList[index];
-          return FeedbackCard(
-            name: item['name'],
-            date: item['date'],
-            message: item['message'],
-            rating: item['rating'],
-          );
-        },
+      body: SafeArea(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: feedbackList.length,
+          itemBuilder: (context, index) {
+            final item = feedbackList[index];
+            return FeedbackCard(
+              name: item['name'],
+              date: item['date'],
+              message: item['message'],
+              rating: item['rating'],
+            );
+          },
+        ),
       ),
     );
   }

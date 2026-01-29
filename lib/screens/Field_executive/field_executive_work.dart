@@ -70,8 +70,9 @@ class _WorksScreenState extends State<WorksScreen> {
         label: const Text("Calendar"),
       ),
 
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           const SizedBox(height: 12),
 
           /// Tabs
@@ -99,7 +100,8 @@ class _WorksScreenState extends State<WorksScreen> {
               },
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

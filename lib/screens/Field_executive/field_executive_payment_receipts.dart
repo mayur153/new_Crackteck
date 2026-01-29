@@ -56,11 +56,12 @@ class _FieldExecutivePaymentReceiptsScreenState
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             const Text(
               'How much you have spend',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -243,7 +244,8 @@ class _FieldExecutivePaymentReceiptsScreenState
                 ),
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -17,12 +17,13 @@ class FieldExecutiveWorkCallScreen extends StatefulWidget {
 
 class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScreen> {
   static const Color primaryGreen = Color(0xFF1E7C10);
-  int activeTabIndex = 0; // 0: Installations, 1: Repairs, 2: AMC
+  int activeTabIndex = 0; // 0: Installations, 1: Repairs, 2: AMC, 3: Quick Service
 
   final List<Map<String, dynamic>> tabs = [
     {'label': 'Installations', 'icon': Icons.settings_outlined},
     {'label': 'Repairs', 'icon': Icons.build_outlined},
     {'label': 'AMC', 'icon': Icons.print_outlined},
+    {'label': 'Quick Service', 'icon': Icons.bolt_outlined},
   ];
 
   // Mock data for each tab
@@ -51,6 +52,14 @@ class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScr
       JobItem(title: 'Office CCTV Service', serviceId: '#UOHLF756967EH', location: 'Borivali (West)', priority: 'Low'),
       JobItem(title: 'Service Check (Windows)', serviceId: '#PJFIF778985DYU', location: 'Borivali (West)', priority: 'Low'),
     ],
+    3: [
+      JobItem(title: 'Quick Keyboard Fix', serviceId: '#QSKB112233AA', location: 'Borivali (West)', priority: 'High'),
+      JobItem(title: 'Quick Wi-Fi Setup', serviceId: '#QSWF445566BB', location: 'Malad (East)', priority: 'High'),
+      JobItem(title: 'Quick OS Tune-up', serviceId: '#QSOS778899CC', location: 'Kandivali (West)', priority: 'Medium'),
+      JobItem(title: 'Quick Driver Update', serviceId: '#QSDR991122DD', location: 'Borivali (West)', priority: 'Medium'),
+      JobItem(title: 'Quick Printer Fix', serviceId: '#QSPR334455EE', location: 'Borivali (West)', priority: 'Low'),
+      JobItem(title: 'Quick Backup Setup', serviceId: '#QSBU667788FF', location: 'Kandivali (West)', priority: 'Low'),
+    ],
   };
 
   @override
@@ -69,8 +78,9 @@ class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScr
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           // Custom Tab Bar
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -127,7 +137,8 @@ class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScr
               },
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -166,7 +177,13 @@ class _JobCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         // Determine job type string based on activeTabIndex
-        final jobType = activeTabIndex == 0 ? 'installations' : activeTabIndex == 1 ? 'repairs' : 'amc';
+        final jobType = activeTabIndex == 0
+            ? 'installations'
+            : activeTabIndex == 1
+                ? 'repairs'
+                : activeTabIndex == 2
+                    ? 'amc'
+                    : 'quick_service';
 
         Navigator.pushNamed(
           context,

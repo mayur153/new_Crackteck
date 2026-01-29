@@ -39,8 +39,9 @@ class _ProductRequestedDetailScreenState extends State<ProductRequestedDetailScr
         ),
       ),
 
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Column(
+          children: [
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -215,7 +216,8 @@ class _ProductRequestedDetailScreenState extends State<ProductRequestedDetailScr
               ],
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

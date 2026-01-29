@@ -116,11 +116,12 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             const SizedBox(height: 32),
             const Text(
               "We've sent your verification code to",
@@ -240,7 +241,8 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
                 ),
               ],
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
