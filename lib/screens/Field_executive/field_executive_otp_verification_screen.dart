@@ -72,8 +72,8 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
       // Navigate to the next screen
       Navigator.pushNamed(
         context,
-        AppRoutes.FieldExecutiveUploadBeforeImagesScreen,
-        arguments: fieldexecutiveuploadbeforeimagesArguments(
+        AppRoutes.FieldExecutiveAllProductsScreen,
+        arguments: fieldexecutiveallproductsArguments(
           roleId: widget.roleId,
           roleName: widget.roleName,
         ),
