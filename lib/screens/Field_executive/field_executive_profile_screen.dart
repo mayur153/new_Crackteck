@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'field_excutive_attendance.dart';
+import 'field_executive_feedback.dart';
 import 'field_executive_payment.dart';
 import 'field_executive_personal_info.dart';
 import 'field_executive_pickup_product.dart';
@@ -192,7 +193,14 @@ class _CombinedProfileScreenState extends State<CombinedProfileScreen> {
                 );
               },),
               const SizedBox(height: 12),
-              _OptionTile(icon: Icons.privacy_tip_outlined, label: "Feedbacks ", onTap: () {}),
+              _OptionTile(icon: Icons.privacy_tip_outlined, label: "Feedbacks ", onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => fieldexecutiveFeedbackScreen ( roleId: 0, roleName: '', ),
+                  ),
+                );
+              },),
               const SizedBox(height: 12),
               _OptionTile(icon: Icons.privacy_tip_outlined, label: "Help & Support", onTap: () {}),
             ],
