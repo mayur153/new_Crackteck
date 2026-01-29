@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FeedbackScreen extends StatelessWidget {
-  const FeedbackScreen({super.key});
+class fieldexecutiveFeedbackScreen extends StatelessWidget {
+  final int roleId;
+  final String roleName;
+  const fieldexecutiveFeedbackScreen({super.key, required this.roleId, required this.roleName});
 
   @override
   Widget build(BuildContext context) {

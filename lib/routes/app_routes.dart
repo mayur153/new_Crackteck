@@ -92,6 +92,7 @@
     static const String PaymentsScreen = '/field_executive_payments';
     static const String WorksScreen = '/field_executive_works';
     static const String fieldexecutivePrivacyPolicyScreen = '/field_executive_privacy_policy';
+    static const String fieldexecutiveFeedbackScreen = '/field_executive_feedback';
 
     static const String PlaceholderScreen = '/placeholder';
 
@@ -608,4 +609,13 @@
     final String roleName;
 
     fieldexecutivePrivacyPolicyScreenArguments({required this.roleId, required this.roleName});
+  }
+
+
+
+  class fieldexecutiveFeedbackScreenArguments {
+    final int roleId;
+    final String roleName;
+
+    fieldexecutiveFeedbackScreenArguments({required this.roleId, required this.roleName});
   }

@@ -24,6 +24,7 @@ import '../screens/Field_executive/field_excutive_attendance.dart';
 import '../screens/Field_executive/field_executive_add_product.dart';
 import '../screens/Field_executive/field_executive_all_products_screen.dart';
 import '../screens/Field_executive/field_executive_dashboard.dart';
+import '../screens/Field_executive/field_executive_feedback.dart';
 import '../screens/Field_executive/field_executive_installation_detail_screen.dart';
 import '../screens/Field_executive/field_executive_map_tracking_screen.dart';
 import '../screens/Field_executive/field_executive_notification.dart';
@@ -981,6 +982,23 @@ class RouteGenerator {
         }
         return MaterialPageRoute(
           builder: (_) => fieldexecutivePrivacyPolicyScreen(
+            roleId: args.roleId,
+            roleName: args.roleName,
+          ),
+          settings: settings,
+        );
+
+
+
+
+
+      case AppRoutes.fieldexecutiveFeedbackScreen:
+        final args = settings.arguments as fieldexecutiveFeedbackScreenArguments?;
+        if (args == null) {
+          return _errorRoute('Arguments missing');
+        }
+        return MaterialPageRoute(
+          builder: (_) => fieldexecutiveFeedbackScreen(
             roleId: args.roleId,
             roleName: args.roleName,
           ),
