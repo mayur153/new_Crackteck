@@ -17,9 +17,9 @@ class FieldExecutiveOtpVerificationScreen extends StatefulWidget {
 }
 
 class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpVerificationScreen> {
-  final List<TextEditingController> _controllers = List.generate(5, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(5, (_) => FocusNode());
-  
+  final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
+  final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
+
   Timer? _timer;
   int _secondsRemaining = 80; // 1:20 = 80 seconds
   static const Color primaryGreen = Color(0xFF1E7C10);
@@ -51,17 +51,17 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
   void _verifyOtp() {
     String otp = _controllers.map((e) => e.text).join();
     
-    if (otp.length < 5) {
+    if (otp.length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter a 5-digit OTP'),
+          content: Text('Please enter a 4-digit OTP'),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    if (otp == "12345") {
+    if (otp == "1234") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('OTP Verified Successfully!'),
@@ -76,6 +76,7 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
         arguments: fieldexecutiveallproductsArguments(
           roleId: widget.roleId,
           roleName: widget.roleName,
+          flow: FieldExecutiveProductItemDetailFlow.afterOtpVerification,
         ),
       );
     } else {
@@ -149,7 +150,7 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(5, (index) {
+              children: List.generate(4, (index) {
                 return SizedBox(
                   width: 58,
                   height: 58,
@@ -174,7 +175,7 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
                       ),
                     ),
                     onChanged: (value) {
-                      if (value.isNotEmpty && index < 4) {
+                      if (value.isNotEmpty && index < 3) {
                         _focusNodes[index + 1].requestFocus();
                       } else if (value.isEmpty && index > 0) {
                         _focusNodes[index - 1].requestFocus();

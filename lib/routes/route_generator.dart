@@ -796,6 +796,7 @@ class RouteGenerator {
               FieldExecutiveAllProductsScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
+                flow: args.flow,
               ),
           settings: settings,
         );
@@ -814,6 +815,7 @@ class RouteGenerator {
                 serviceId: args.serviceId,
                 location: args.location,
                 priority: args.priority,
+                flow: args.flow,
               ),
           settings: settings,
         );

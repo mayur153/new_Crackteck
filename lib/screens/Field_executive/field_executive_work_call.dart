@@ -64,6 +64,11 @@ class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScr
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double tabFontSize = screenWidth < 360 ? 11 : screenWidth < 400 ? 12 : 14;
+    final double tabIconSize = screenWidth < 360 ? 16 : 20;
+    final double tabHorizontalPadding = screenWidth < 360 ? 8 : 12;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -84,39 +89,60 @@ class _FieldExecutiveWorkCallScreenState extends State<FieldExecutiveWorkCallScr
           // Custom Tab Bar
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(tabs.length, (index) {
-                final bool isActive = activeTabIndex == index;
-                return GestureDetector(
-                  onTap: () => setState(() => activeTabIndex = index),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: isActive ? Colors.grey.shade300 : Colors.transparent),
-                      boxShadow: isActive ? [
-                        BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2))
-                      ] : null,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(tabs[index]['icon'], size: 20, color: isActive ? Colors.blue : Colors.grey),
-                        const SizedBox(width: 8),
-                        Text(
-                          tabs[index]['label'],
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                            color: isActive ? Colors.black : Colors.grey,
-                          ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(tabs.length, (index) {
+                  final bool isActive = activeTabIndex == index;
+                  return Padding(
+                    padding: EdgeInsets.only(left: index == 0 ? 16 : 8, right: index == tabs.length - 1 ? 16 : 0),
+                    child: GestureDetector(
+                      onTap: () => setState(() => activeTabIndex = index),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: tabHorizontalPadding, vertical: 8),
+                        constraints: const BoxConstraints(minWidth: 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: isActive ? Colors.grey.shade300 : Colors.transparent),
+                          boxShadow: isActive
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  )
+                                ]
+                              : null,
                         ),
-                      ],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              tabs[index]['icon'],
+                              size: tabIconSize,
+                              color: isActive ? Colors.blue : Colors.grey,
+                            ),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                tabs[index]['label'],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: tabFontSize,
+                                  fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                                  color: isActive ? Colors.black : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ),
 

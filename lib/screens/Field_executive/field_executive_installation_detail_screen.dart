@@ -288,27 +288,29 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
                 const SizedBox(height: 16),
 
                 // Go to location button (same for all job types)
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.FieldExecutiveMapTrackingScreen,
-                      arguments: fieldexecutivemaptrackingArguments(
-                        roleId: widget.roleId,
-                        roleName: widget.roleName,
-                        serviceId: widget.serviceId,
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryGreen,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                if (isAccepted) ...[
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.FieldExecutiveMapTrackingScreen,
+                        arguments: fieldexecutivemaptrackingArguments(
+                          roleId: widget.roleId,
+                          roleName: widget.roleName,
+                          serviceId: widget.serviceId,
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryGreen,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    icon: const Icon(Icons.near_me_outlined, color: Colors.white),
+                    label: const Text('Go to location', style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
-                  icon: const Icon(Icons.near_me_outlined, color: Colors.white),
-                  label: const Text('Go to location', style: TextStyle(color: Colors.white, fontSize: 16)),
-                ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                ],
 
                 // Map Placeholder
                 Container(

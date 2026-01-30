@@ -99,6 +99,11 @@
 
   }
 
+  enum FieldExecutiveProductItemDetailFlow {
+    normalBrowsing,
+    afterOtpVerification,
+  }
+
   /// Route arguments for passing data between screens
   class LoginArguments {
     final int roleId;
@@ -502,8 +507,13 @@
   class fieldexecutiveallproductsArguments {
     final int roleId;
     final String roleName;
+    final FieldExecutiveProductItemDetailFlow flow;
 
-    fieldexecutiveallproductsArguments({required this.roleId, required this.roleName});
+    fieldexecutiveallproductsArguments({
+      required this.roleId,
+      required this.roleName,
+      this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
+    });
   }
 
   class fieldexecutiveproductitemdetailArguments {
@@ -513,6 +523,7 @@
     final String serviceId;
     final String location;
     final String priority;
+    final FieldExecutiveProductItemDetailFlow flow;
 
     fieldexecutiveproductitemdetailArguments({
       required this.roleId,
@@ -521,6 +532,7 @@
       required this.serviceId,
       required this.location,
       required this.priority,
+      this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
     });
   }
 

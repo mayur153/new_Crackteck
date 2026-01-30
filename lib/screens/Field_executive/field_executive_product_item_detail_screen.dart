@@ -8,6 +8,7 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
   final String serviceId;
   final String location;
   final String priority;
+  final FieldExecutiveProductItemDetailFlow flow;
 
   const FieldExecutiveProductItemDetailScreen({
     super.key,
@@ -17,6 +18,7 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
     required this.serviceId,
     required this.location,
     required this.priority,
+    required this.flow,
   });
 
   static const primaryGreen = Color(0xFF1E7C10);
@@ -121,42 +123,44 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-          child: SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                // Use named route so route_generator is used consistently across app
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.FieldExecutiveUploadBeforeImagesScreen,
-                  arguments: fieldexecutiveuploadbeforeimagesArguments(
-                    roleId: roleId,
-                    roleName: roleName,
+      bottomNavigationBar: flow == FieldExecutiveProductItemDetailFlow.afterOtpVerification
+          ? SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Use named route so route_generator is used consistently across app
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.FieldExecutiveUploadBeforeImagesScreen,
+                        arguments: fieldexecutiveuploadbeforeimagesArguments(
+                          roleId: roleId,
+                          roleName: roleName,
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryGreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Start Service',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryGreen,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Text(
-                'Start Service',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : null,
     );
   }
 

@@ -4,11 +4,13 @@ import '../../routes/app_routes.dart';
 class FieldExecutiveAllProductsScreen extends StatelessWidget {
   final int roleId;
   final String roleName;
+  final FieldExecutiveProductItemDetailFlow flow;
 
   const FieldExecutiveAllProductsScreen({
     super.key,
     required this.roleId,
     required this.roleName,
+    this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
   });
 
   static const primaryGreen = Color(0xFF1E7C10);
@@ -87,6 +89,7 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
             serviceId: serviceId,
             location: location,
             priority: priority,
+            flow: flow,
           ),
         );
       },
