@@ -82,7 +82,8 @@ class _FieldExecutiveCaseTransferScreenState extends State<FieldExecutiveCaseTra
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Case transfer submitted successfully')),
                     );
-                    Navigator.pop(context);
+                    // Return a boolean true to indicate submission success
+                    Navigator.pop(context, true);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please enter a reason')),

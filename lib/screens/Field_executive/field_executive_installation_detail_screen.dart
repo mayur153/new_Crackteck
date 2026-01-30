@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../routes/app_routes.dart';
 
+enum CaseTransferStatus { none, pending }
+
 class FieldExecutiveInstallationDetailScreen extends StatefulWidget {
   final int roleId;
   final String roleName;
@@ -28,6 +30,7 @@ class FieldExecutiveInstallationDetailScreen extends StatefulWidget {
 class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveInstallationDetailScreen> {
   bool isAccepted = false;
   DateTime? selectedDate;
+  CaseTransferStatus caseTransferStatus = CaseTransferStatus.none;
   static const primaryGreen = Color(0xFF1E7C10);
 
   Future<void> _selectDate(BuildContext context) async {
@@ -349,53 +352,96 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
           ),
           // same accept / reschedule / case-transfer actions for all job types
           child: isAccepted
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _selectDate(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: selectedDate == null ? Colors.grey.shade100 : primaryGreen,
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          'Rescheduled',
-                          style: TextStyle(
-                            color: selectedDate == null ? primaryGreen : Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.FieldExecutiveCaseTransferScreen,
-                            arguments: fieldexecutivecasetransferArguments(
-                              roleId: widget.roleId,
-                              roleName: widget.roleName,
+              ? (
+                  // If pending, show only the pending container (no buttons)
+                  caseTransferStatus == CaseTransferStatus.pending
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.orange.shade200),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.info_outline, color: Colors.orange, size: 20),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'Case transfer is pending. You will be notified once it is accepted by another executive.',
+                                      style: const TextStyle(fontSize: 14, color: Colors.orange),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryGreen,
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: const Text(
-                          'Case Transfer',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
+                          ],
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () => _selectDate(context),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: selectedDate == null ? Colors.grey.shade100 : primaryGreen,
+                                      minimumSize: const Size(double.infinity, 50),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                      elevation: 0,
+                                    ),
+                                    child: Text(
+                                      'Rescheduled',
+                                      style: TextStyle(
+                                        color: selectedDate == null ? primaryGreen : Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      // Navigate to Case Transfer screen and await result
+                                      final result = await Navigator.pushNamed(
+                                        context,
+                                        AppRoutes.FieldExecutiveCaseTransferScreen,
+                                        arguments: fieldexecutivecasetransferArguments(
+                                          roleId: widget.roleId,
+                                          roleName: widget.roleName,
+                                        ),
+                                      );
+
+                                      // If the case transfer screen returned true, mark as pending
+                                      if (result == true) {
+                                        setState(() {
+                                          caseTransferStatus = CaseTransferStatus.pending;
+                                        });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryGreen,
+                                      minimumSize: const Size(double.infinity, 50),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                    ),
+                                    child: const Text(
+                                      'Case Transfer',
+                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
                 )
               : ElevatedButton(
                   onPressed: () {
