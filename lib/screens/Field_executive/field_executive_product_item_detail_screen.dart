@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../routes/app_routes.dart';
 
 class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
   final int roleId;
@@ -128,8 +129,14 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Start Service')),
+                // Use named route so route_generator is used consistently across app
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.FieldExecutiveUploadBeforeImagesScreen,
+                  arguments: fieldexecutiveuploadbeforeimagesArguments(
+                    roleId: roleId,
+                    roleName: roleName,
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
