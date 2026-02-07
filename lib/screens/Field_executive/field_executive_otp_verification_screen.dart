@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../models/field_executive_product_service.dart';
 import '../../routes/app_routes.dart';
 
 class FieldExecutiveOtpVerificationScreen extends StatefulWidget {
@@ -77,6 +78,7 @@ class _FieldExecutiveOtpVerificationScreenState extends State<FieldExecutiveOtpV
           roleId: widget.roleId,
           roleName: widget.roleName,
           flow: FieldExecutiveProductItemDetailFlow.afterOtpVerification,
+          controller: FieldExecutiveProductServicesController.withDefaults(),
         ),
       );
     } else {

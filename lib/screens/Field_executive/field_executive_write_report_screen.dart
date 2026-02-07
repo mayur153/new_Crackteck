@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import '../../models/field_executive_product_service.dart';
+import '../../routes/app_routes.dart';
 
 class FieldExecutiveWriteReportScreen extends StatefulWidget {
   final int roleId;
   final String roleName;
+  final String serviceId;
+  final FieldExecutiveProductItemDetailFlow flow;
+  final FieldExecutiveProductServicesController controller;
 
   const FieldExecutiveWriteReportScreen({
     super.key,
     required this.roleId,
     required this.roleName,
+    required this.serviceId,
+    required this.flow,
+    required this.controller,
   });
 
   @override
@@ -83,8 +91,33 @@ class _FieldExecutiveWriteReportScreenState
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Handle submit logic
-                  Navigator.pop(context);
+                  widget.controller.markCompleted(widget.serviceId);
+
+                  if (widget.controller.hasIncomplete) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.FieldExecutiveAllProductsScreen,
+                      (route) => false,
+                      arguments: fieldexecutiveallproductsArguments(
+                        roleId: widget.roleId,
+                        roleName: widget.roleName,
+                        flow: widget.flow,
+                        controller: widget.controller,
+                      ),
+                    );
+                    return;
+                  }
+
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.FieldExecutiveDashboard,
+                    (route) => false,
+                    arguments: fieldexecutivedashboardArguments(
+                      roleId: widget.roleId,
+                      roleName: widget.roleName,
+                      initialIndex: 0,
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryGreen,

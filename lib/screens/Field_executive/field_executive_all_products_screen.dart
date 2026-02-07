@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../models/field_executive_product_service.dart';
 import '../../routes/app_routes.dart';
 
 class FieldExecutiveAllProductsScreen extends StatelessWidget {
   final int roleId;
   final String roleName;
   final FieldExecutiveProductItemDetailFlow flow;
+  final FieldExecutiveProductServicesController controller;
 
   const FieldExecutiveAllProductsScreen({
     super.key,
     required this.roleId,
     required this.roleName,
     this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
+    required this.controller,
   });
 
   static const primaryGreen = Color(0xFF1E7C10);
@@ -32,51 +35,44 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-          _buildProductCard(
-            context,
-            'Desktop Installation',
-            'Visit charge of Rs 159 waived in final bill; spare part/ repair cost extra',
-            '#LYCFF776567DS',
-            'Kandivali (West)',
-            'High',
-          ),
-          const SizedBox(height: 12),
-          _buildProductCard(
-            context,
-            'Monitor Setup',
-            'Standard installation for LED/LCD monitors',
-            '#LYCFF776567DS',
-            'Borivali (East)',
-            'Medium',
-          ),
-          const SizedBox(height: 12),
-          _buildProductCard(
-            context,
-            'UPS Installation',
-            'Battery backup configuration and testing',
-            '#LYCFF776567DS',
-            'Malad (West)',
-            'Low',
-          ),
-          const SizedBox(height: 12),
-          _buildProductCard(
-            context,
-            'Keyboard and Mouse',
-            'Wired/Wireless setup and driver installation',
-            '#LYCFF776567DS',
-            'Kandivali (West)',
-            'Low',
-          ),
-          ],
+        child: AnimatedBuilder(
+          animation: controller,
+          builder: (context, _) {
+            final items = controller.items;
+            return ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                final subtitle = item.title == 'Monitor Setup'
+                    ? 'Standard installation for LED/LCD monitors'
+                    : item.title == 'UPS Installation'
+                        ? 'Battery backup configuration and testing'
+                        : item.title == 'Keyboard and Mouse'
+                            ? 'Wired/Wireless setup and driver installation'
+                            : 'Visit charge of Rs 159 waived in final bill; spare part/ repair cost extra';
+                return Padding(
+                  padding: EdgeInsets.only(bottom: index == items.length - 1 ? 0 : 12),
+                  child: _buildProductCard(
+                    context,
+                    item,
+                    subtitle,
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildProductCard(BuildContext context, String title, String subtitle, String serviceId, String location, String priority) {
+  Widget _buildProductCard(
+    BuildContext context,
+    FieldExecutiveProductService item,
+    String subtitle,
+  ) {
+    final isCompleted = item.isCompleted;
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -85,11 +81,12 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
           arguments: fieldexecutiveproductitemdetailArguments(
             roleId: roleId,
             roleName: roleName,
-            title: title,
-            serviceId: serviceId,
-            location: location,
-            priority: priority,
+            title: item.title,
+            serviceId: item.serviceId,
+            location: item.location,
+            priority: item.priority,
             flow: flow,
+            controller: controller,
           ),
         );
       },
@@ -129,7 +126,7 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          item.title,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
@@ -146,7 +143,7 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
                               width: 70,
                               child: Text('Service ID:', style: TextStyle(fontSize: 12, color: Colors.black54)),
                             ),
-                            Text(serviceId, style: const TextStyle(fontSize: 12, color: primaryGreen, fontWeight: FontWeight.bold)),
+                            Text(item.serviceId, style: const TextStyle(fontSize: 12, color: primaryGreen, fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 4),
@@ -156,8 +153,27 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
                               width: 70,
                               child: Text('Location:', style: TextStyle(fontSize: 12, color: Colors.black54)),
                             ),
-                            Text(location, style: const TextStyle(fontSize: 12, color: primaryGreen, fontWeight: FontWeight.bold)),
+                            Text(item.location, style: const TextStyle(fontSize: 12, color: primaryGreen, fontWeight: FontWeight.bold)),
                           ],
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isCompleted ? Colors.green.shade50 : Colors.red.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isCompleted ? Colors.green.shade200 : Colors.red.shade200,
+                            ),
+                          ),
+                          child: Text(
+                            isCompleted ? 'Completed' : 'Incomplete',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: isCompleted ? Colors.green : Colors.red,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -176,7 +192,7 @@ class FieldExecutiveAllProductsScreen extends StatelessWidget {
                   borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(12)),
                 ),
                 child: Text(
-                  priority,
+                  item.priority,
                   style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red),
                 ),
               ),

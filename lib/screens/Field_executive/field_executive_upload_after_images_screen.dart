@@ -172,7 +172,7 @@ class _FieldExecutiveUploadAfterImagesScreenState
                   ),
                 ),
                 child: const Text(
-                  'Submit',
+                  'Next',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

@@ -797,6 +797,7 @@ class RouteGenerator {
                 roleId: args.roleId,
                 roleName: args.roleName,
                 flow: args.flow,
+                controller: args.controller,
               ),
           settings: settings,
         );
@@ -816,6 +817,7 @@ class RouteGenerator {
                 location: args.location,
                 priority: args.priority,
                 flow: args.flow,
+                controller: args.controller,
               ),
           settings: settings,
         );
@@ -845,6 +847,9 @@ class RouteGenerator {
               FieldExecutiveUploadBeforeImagesScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
+                serviceId: args.serviceId,
+                flow: args.flow,
+                controller: args.controller,
               ),
           settings: settings,
         );
@@ -879,6 +884,9 @@ class RouteGenerator {
               FieldExecutiveWriteReportScreen(
                 roleId: args.roleId,
                 roleName: args.roleName,
+                serviceId: args.serviceId,
+                flow: args.flow,
+                controller: args.controller,
               ),
           settings: settings,
         );

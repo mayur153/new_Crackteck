@@ -2,16 +2,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../models/field_executive_product_service.dart';
+import '../../routes/app_routes.dart';
 import 'field_executive_installation_checklist_screen.dart';
 
 class FieldExecutiveUploadBeforeImagesScreen extends StatefulWidget {
   final int roleId;
   final String roleName;
+  final String serviceId;
+  final FieldExecutiveProductItemDetailFlow flow;
+  final FieldExecutiveProductServicesController controller;
 
   const FieldExecutiveUploadBeforeImagesScreen({
     super.key,
     required this.roleId,
     required this.roleName,
+    required this.serviceId,
+    required this.flow,
+    required this.controller,
   });
 
   @override
@@ -168,6 +176,9 @@ class _FieldExecutiveUploadBeforeImagesScreenState
                       builder: (context) => FieldExecutiveInstallationChecklistScreen(
                         roleId: widget.roleId,
                         roleName: widget.roleName,
+                        serviceId: widget.serviceId,
+                        flow: widget.flow,
+                        controller: widget.controller,
                       ),
                     ),
                   );
@@ -180,7 +191,7 @@ class _FieldExecutiveUploadBeforeImagesScreenState
                   ),
                 ),
                 child: const Text(
-                  'Submit',
+                  'Next',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

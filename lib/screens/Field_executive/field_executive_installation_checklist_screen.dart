@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../models/field_executive_product_service.dart';
 import '../../routes/app_routes.dart';
 import 'field_executive_add_product.dart';
 import 'field_executive_upload_after_images_screen.dart';
@@ -7,11 +8,17 @@ import 'field_executive_upload_after_images_screen.dart';
 class FieldExecutiveInstallationChecklistScreen extends StatefulWidget {
   final int roleId;
   final String roleName;
+  final String serviceId;
+  final FieldExecutiveProductItemDetailFlow flow;
+  final FieldExecutiveProductServicesController controller;
 
   const FieldExecutiveInstallationChecklistScreen({
     super.key,
     required this.roleId,
     required this.roleName,
+    required this.serviceId,
+    required this.flow,
+    required this.controller,
   });
 
   @override
@@ -107,6 +114,9 @@ class _FieldExecutiveInstallationChecklistScreenState
                     arguments: fieldexecutivewritereportArguments(
                       roleId: widget.roleId,
                       roleName: widget.roleName,
+                      serviceId: widget.serviceId,
+                      flow: widget.flow,
+                      controller: widget.controller,
                     ),
                   );
                 },

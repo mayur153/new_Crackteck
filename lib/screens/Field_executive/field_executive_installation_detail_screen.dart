@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/field_executive_product_service.dart';
 import '../../routes/app_routes.dart';
 
 enum CaseTransferStatus { none, pending }
@@ -227,6 +228,7 @@ class _FieldExecutiveInstallationDetailScreenState extends State<FieldExecutiveI
                           arguments: fieldexecutiveallproductsArguments(
                             roleId: widget.roleId,
                             roleName: widget.roleName,
+                            controller: FieldExecutiveProductServicesController.withDefaults(),
                           ),
                         );
                       },

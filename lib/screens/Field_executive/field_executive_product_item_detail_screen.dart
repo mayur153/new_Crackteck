@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/field_executive_product_service.dart';
 import '../../routes/app_routes.dart';
 
 class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
   final String location;
   final String priority;
   final FieldExecutiveProductItemDetailFlow flow;
+  final FieldExecutiveProductServicesController controller;
 
   const FieldExecutiveProductItemDetailScreen({
     super.key,
@@ -19,6 +21,7 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
     required this.location,
     required this.priority,
     required this.flow,
+    required this.controller,
   });
 
   static const primaryGreen = Color(0xFF1E7C10);
@@ -139,6 +142,9 @@ class FieldExecutiveProductItemDetailScreen extends StatelessWidget {
                         arguments: fieldexecutiveuploadbeforeimagesArguments(
                           roleId: roleId,
                           roleName: roleName,
+                          serviceId: serviceId,
+                          flow: flow,
+                          controller: controller,
                         ),
                       );
                     },

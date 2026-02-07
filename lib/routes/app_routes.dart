@@ -1,3 +1,5 @@
+import '../models/field_executive_product_service.dart';
+
   /// App-wide route name constants
   class AppRoutes {
     AppRoutes._(); // Private constructor to prevent instantiation
@@ -508,12 +510,14 @@
     final int roleId;
     final String roleName;
     final FieldExecutiveProductItemDetailFlow flow;
+    final FieldExecutiveProductServicesController controller;
 
     fieldexecutiveallproductsArguments({
       required this.roleId,
       required this.roleName,
       this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
-    });
+      FieldExecutiveProductServicesController? controller,
+    }) : controller = controller ?? FieldExecutiveProductServicesController.withDefaults();
   }
 
   class fieldexecutiveproductitemdetailArguments {
@@ -524,6 +528,7 @@
     final String location;
     final String priority;
     final FieldExecutiveProductItemDetailFlow flow;
+    final FieldExecutiveProductServicesController controller;
 
     fieldexecutiveproductitemdetailArguments({
       required this.roleId,
@@ -533,7 +538,8 @@
       required this.location,
       required this.priority,
       this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
-    });
+      FieldExecutiveProductServicesController? controller,
+    }) : controller = controller ?? FieldExecutiveProductServicesController.withDefaults();
   }
 
   class fieldexecutivemaptrackingArguments {
@@ -550,15 +556,33 @@
   class fieldexecutiveuploadbeforeimagesArguments {
     final int roleId;
     final String roleName;
+    final String serviceId;
+    final FieldExecutiveProductItemDetailFlow flow;
+    final FieldExecutiveProductServicesController controller;
 
-    fieldexecutiveuploadbeforeimagesArguments({required this.roleId, required this.roleName});
+    fieldexecutiveuploadbeforeimagesArguments({
+      required this.roleId,
+      required this.roleName,
+      required this.serviceId,
+      this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
+      required this.controller,
+    });
   }
 
   class fieldexecutivewritereportArguments {
     final int roleId;
     final String roleName;
+    final String serviceId;
+    final FieldExecutiveProductItemDetailFlow flow;
+    final FieldExecutiveProductServicesController controller;
 
-    fieldexecutivewritereportArguments({required this.roleId, required this.roleName});
+    fieldexecutivewritereportArguments({
+      required this.roleId,
+      required this.roleName,
+      required this.serviceId,
+      this.flow = FieldExecutiveProductItemDetailFlow.normalBrowsing,
+      required this.controller,
+    });
   }
 
   class fieldexecutivecasetransferArguments {
